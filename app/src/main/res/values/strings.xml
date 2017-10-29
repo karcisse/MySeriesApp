@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">MySeriesAppV2</string>
+    <string name="title">Title</string>
+    <string name="series_title">Series title</string>
+    <string name="episode">Episode</string>
+    <string name="season">Season</string>
+    <string name="status">Status</string>
+    <string name="save">Save</string>
+
+    <!--statuses-->
+    <string name="to_watch">To watch</string>
+    <string name="watching">Watching</string>
+    <string name="complete">Complete</string>
+    <string name="dropped">Dropped</string>
+    <string name="arriving">Arriving</string>
+    <string name="fill_all_fields">Please fill all inputs</string>
+</resources>
