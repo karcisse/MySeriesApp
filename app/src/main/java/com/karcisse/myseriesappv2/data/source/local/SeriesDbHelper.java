@@ -12,13 +12,13 @@ public class SeriesDbHelper extends SQLiteOpenHelper {
     private static final String COMMA_SEP = ",";
 
     private static final String SQL_CREATE_ENTRIES =
-            "CREATE TABLE " + SeriesPersistenceContract.SeriesEntry.TABLE_NAME + " (" +
-                    SeriesPersistenceContract.SeriesEntry.SERIES_ID + TEXT_TYPE + " PRIMARY KEY," +
-                    SeriesPersistenceContract.SeriesEntry.SERIES_TITLE + TEXT_TYPE + COMMA_SEP +
-                    SeriesPersistenceContract.SeriesEntry.SERIES_SEASON + TEXT_TYPE + COMMA_SEP +
-                    SeriesPersistenceContract.SeriesEntry.SERIES_EPISODE + TEXT_TYPE + COMMA_SEP +
-                    SeriesPersistenceContract.SeriesEntry.SERIES_STATUS + TEXT_TYPE +
-                    " )";
+            "CREATE TABLE " + SeriesPersistenceContract.SeriesEntry.TABLE_NAME + " ("
+                    + SeriesPersistenceContract.SeriesEntry.SERIES_ID + TEXT_TYPE + " PRIMARY KEY,"
+                    + SeriesPersistenceContract.SeriesEntry.SERIES_TITLE + TEXT_TYPE + COMMA_SEP
+                    + SeriesPersistenceContract.SeriesEntry.SERIES_SEASON + TEXT_TYPE + COMMA_SEP
+                    + SeriesPersistenceContract.SeriesEntry.SERIES_EPISODE + TEXT_TYPE + COMMA_SEP
+                    + SeriesPersistenceContract.SeriesEntry.SERIES_STATUS + TEXT_TYPE
+                    + " )";
 
     public SeriesDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

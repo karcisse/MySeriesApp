@@ -19,6 +19,8 @@ import com.karcisse.myseriesappv2.data.Series;
 
 import java.util.List;
 
+// TODO: 02.11.17 Think about it 
+@SuppressWarnings("PMD.AccessorMethodGeneration")
 public class RecordSeriesFragment extends Fragment implements RecordSeriesContract.View {
 
     private RecordSeriesContract.Presenter presenter;

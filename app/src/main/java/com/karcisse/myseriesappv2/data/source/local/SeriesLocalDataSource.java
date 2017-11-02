@@ -13,21 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class SeriesLocalDataSource implements SeriesDataSource {
+public final class SeriesLocalDataSource implements SeriesDataSource {
 
-    private static SeriesLocalDataSource INSTANCE;
+    private final SeriesDbHelper dbHelper;
 
-    private SeriesDbHelper dbHelper;
-
-    private SeriesLocalDataSource(@NonNull Context context) {
+    public SeriesLocalDataSource(@NonNull Context context) {
         this.dbHelper = new SeriesDbHelper(context);
-    }
-
-    public static SeriesLocalDataSource getInstance(@NonNull Context context) {
-        if (INSTANCE == null) {
-            INSTANCE = new SeriesLocalDataSource(context);
-        }
-        return INSTANCE;
     }
 
     @NonNull

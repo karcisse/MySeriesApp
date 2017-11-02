@@ -41,8 +41,8 @@ public class RecordSeriesPresenter implements RecordSeriesContract.Presenter {
 
         repository.saveSeries(new Series(seriesId,
                 title,
-                Integer.valueOf(season),
-                Integer.valueOf(episode),
+                Integer.parseInt(season),
+                Integer.parseInt(episode),
                 status));
 
         view.closeFragment();

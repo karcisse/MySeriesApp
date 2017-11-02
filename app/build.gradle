@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.noveogroup.android.check'
 
 android {
     compileSdkVersion 25
@@ -27,4 +28,20 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.3.1'
     testCompile 'junit:junit:4.12'
+}
+
+check {
+    abortOnError true
+    checkstyle {
+        config hard()
+        report new File(project.buildDir, 'reports/checkstyle')
+    }
+    findbugs {
+        config hard()
+        report new File(project.buildDir, 'reports/findbugs')
+    }
+    pmd {
+        config hard()
+        report new File(project.buildDir, 'reports/pmd')
+    }
 }

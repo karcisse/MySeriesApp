@@ -16,7 +16,7 @@ import com.karcisse.myseriesappv2.utils.ActivityUtils;
 
 public class MySeriesActivity extends AppCompatActivity {
 
-    public final static String SERIES_ID = "seriesId";
+    public static final String SERIES_ID = "seriesId";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,7 +36,7 @@ public class MySeriesActivity extends AppCompatActivity {
 
         new SeriesListPresenter(seriesListFragment,
                 new SeriesRepositoryImpl(
-                        SeriesLocalDataSource.getInstance(this)
+                        new SeriesLocalDataSource(this)
                 ));
     }
 
@@ -46,7 +46,7 @@ public class MySeriesActivity extends AppCompatActivity {
 
         new RecordSeriesPresenter(fragment,
                 new SeriesRepositoryImpl(
-                        SeriesLocalDataSource.getInstance(this)
+                        new SeriesLocalDataSource(this)
                 ), seriesId);
 
 
