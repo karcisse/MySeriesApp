@@ -20,6 +20,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+// TODO: 02.11.17 Think about it
+@SuppressWarnings("PMD.AccessorMethodGeneration")
 public class SeriesAdapter extends BaseAdapter {
 
     private static final String EDIT_TAG = "editing";
@@ -27,9 +29,10 @@ public class SeriesAdapter extends BaseAdapter {
     private List<Series> data;
     private final SeriesListFragment.Callback callback;
 
-    private Set<String> openedEdits;
+    private final Set<String> openedEdits;
 
     public SeriesAdapter(SeriesListFragment.Callback callback) {
+        super();
         this.callback = callback;
         data = new ArrayList<>();
         openedEdits = new HashSet<>();
@@ -127,6 +130,8 @@ public class SeriesAdapter extends BaseAdapter {
         }
     }
 
+    // TODO: 02.11.17 Think about it
+    @SuppressWarnings({"PMD.ModifiedCyclomaticComplexity", "PMD.StdCyclomaticComplexity"})
     private void setUpEditSeriesRow(View editRow, ViewGroup parent, final String seriesId, Series.SeriesStatus status,
                                     final TextView episode, final TextView season, final TextView seriesStatus) {
 
@@ -206,7 +211,7 @@ public class SeriesAdapter extends BaseAdapter {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                //nothing to do
             }
         });
 

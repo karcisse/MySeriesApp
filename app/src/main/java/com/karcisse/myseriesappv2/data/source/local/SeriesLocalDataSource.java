@@ -15,19 +15,10 @@ import java.util.UUID;
 
 public final class SeriesLocalDataSource implements SeriesDataSource {
 
-    private static SeriesLocalDataSource instance;
+    private final SeriesDbHelper dbHelper;
 
-    private SeriesDbHelper dbHelper;
-
-    private SeriesLocalDataSource(@NonNull Context context) {
+    public SeriesLocalDataSource(@NonNull Context context) {
         this.dbHelper = new SeriesDbHelper(context);
-    }
-
-    public static SeriesLocalDataSource getInstance(@NonNull Context context) {
-        if (instance == null) {
-            instance = new SeriesLocalDataSource(context);
-        }
-        return instance;
     }
 
     @NonNull

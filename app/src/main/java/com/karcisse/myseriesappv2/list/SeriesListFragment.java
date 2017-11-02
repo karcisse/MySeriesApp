@@ -26,7 +26,7 @@ public class SeriesListFragment extends Fragment implements SeriesListContract.V
         View root = inflater.inflate(R.layout.fragment_series_list, container, false);
 
         ListView seriesListView = (ListView) root.findViewById(R.id.series_list_view);
-        adapter = new SeriesAdapter(setUpCalback());
+        adapter = new SeriesAdapter(setUpCallback());
         seriesListView.setAdapter(adapter);
 
         return root;
@@ -48,7 +48,9 @@ public class SeriesListFragment extends Fragment implements SeriesListContract.V
         presenter.start();
     }
 
-    private Callback setUpCalback() {
+    // TODO: 02.11.17 Think about it
+    @SuppressWarnings({"PMD.ModifiedCyclomaticComplexity", "PMD.StdCyclomaticComplexity", "PMD.AccessorMethodGeneration"})
+    private Callback setUpCallback() {
         return new Callback() {
             @Override
             public void onLongClick(String seriesId) {

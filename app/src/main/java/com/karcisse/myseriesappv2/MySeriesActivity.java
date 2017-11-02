@@ -36,7 +36,7 @@ public class MySeriesActivity extends AppCompatActivity {
 
         new SeriesListPresenter(seriesListFragment,
                 new SeriesRepositoryImpl(
-                        SeriesLocalDataSource.getInstance(this)
+                        new SeriesLocalDataSource(this)
                 ));
     }
 
@@ -46,7 +46,7 @@ public class MySeriesActivity extends AppCompatActivity {
 
         new RecordSeriesPresenter(fragment,
                 new SeriesRepositoryImpl(
-                        SeriesLocalDataSource.getInstance(this)
+                        new SeriesLocalDataSource(this)
                 ), seriesId);
 
 

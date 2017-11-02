@@ -12,7 +12,7 @@ import static junit.framework.Assert.assertEquals;
  */
 public class ExampleUnitTest {
     @Test
-    public void additionIsCorrect() throws Exception {
-        assertEquals(4, 2 + 2);
+    public void additionIsCorrect() {
+        assertEquals("Not equal", 4, 2 + 2);
     }
 }
