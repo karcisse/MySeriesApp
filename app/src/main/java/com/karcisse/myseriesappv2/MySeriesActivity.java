@@ -16,7 +16,7 @@ import com.karcisse.myseriesappv2.utils.ActivityUtils;
 
 public class MySeriesActivity extends AppCompatActivity {
 
-    public final static String SERIES_ID = "seriesId";
+    public static final String SERIES_ID = "seriesId";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

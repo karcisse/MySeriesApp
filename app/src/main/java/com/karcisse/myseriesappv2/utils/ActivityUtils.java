@@ -7,7 +7,10 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.karcisse.myseriesappv2.R;
 
-public class ActivityUtils {
+public final class ActivityUtils {
+
+    private ActivityUtils() {
+    }
 
     public static void addFragmentToActivity(@NonNull FragmentManager fragmentManager,
                                              @NonNull Fragment fragment) {

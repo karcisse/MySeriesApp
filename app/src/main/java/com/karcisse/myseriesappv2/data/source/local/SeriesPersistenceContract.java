@@ -6,7 +6,7 @@ public final class SeriesPersistenceContract {
 
     private SeriesPersistenceContract() { }
 
-    public static abstract class SeriesEntry implements BaseColumns {
+    public abstract static class SeriesEntry implements BaseColumns {
         public static final String TABLE_NAME = "series";
         public static final String SERIES_ID = "seriesId";
         public static final String SERIES_TITLE = "seriesTitle";

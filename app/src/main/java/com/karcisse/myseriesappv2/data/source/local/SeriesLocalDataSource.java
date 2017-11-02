@@ -13,9 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class SeriesLocalDataSource implements SeriesDataSource {
+public final class SeriesLocalDataSource implements SeriesDataSource {
 
-    private static SeriesLocalDataSource INSTANCE;
+    private static SeriesLocalDataSource instance;
 
     private SeriesDbHelper dbHelper;
 
@@ -24,10 +24,10 @@ public class SeriesLocalDataSource implements SeriesDataSource {
     }
 
     public static SeriesLocalDataSource getInstance(@NonNull Context context) {
-        if (INSTANCE == null) {
-            INSTANCE = new SeriesLocalDataSource(context);
+        if (instance == null) {
+            instance = new SeriesLocalDataSource(context);
         }
-        return INSTANCE;
+        return instance;
     }
 
     @NonNull

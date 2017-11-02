@@ -9,10 +9,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 // TODO: 11.10.17 is it necessary? For sure improve
-public class EdgeNavDrawer extends ListView implements AdapterView.OnItemClickListener{
+public class EdgeNavDrawer extends ListView implements AdapterView.OnItemClickListener {
     private ArrayAdapter<String> mAdapter;
-    LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    View snapshot = inflater.inflate(R.layout.drawer_list_header, this, false);
+    private LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    private View snapshot = inflater.inflate(R.layout.drawer_list_header, this, false);
 
     public EdgeNavDrawer(Context context) {
         super(context);
@@ -36,7 +36,7 @@ public class EdgeNavDrawer extends ListView implements AdapterView.OnItemClickLi
     }
 
     public void setUpList() {
-        String[] osArray = { "New series", "Settings"};
+        String[] osArray = {"New series", "Settings"};
         mAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, osArray);
         setAdapter(mAdapter);
     }
