@@ -218,7 +218,7 @@ public class SeriesAdapter extends BaseAdapter {
         editRow.setTag(EDIT_TAG);
     }
 
-    private List<SeriesStatusSpinnerChoice>  setSeriesStatusesSpinnerChoices(Context context) {
+    private List<SeriesStatusSpinnerChoice> setSeriesStatusesSpinnerChoices(Context context) {
         List<SeriesStatusSpinnerChoice> spinnerChoices = new ArrayList<>();
         for (Series.SeriesStatus status : Series.SeriesStatus.values()) {
             SeriesStatusSpinnerChoice spinnerChoice = new SeriesStatusSpinnerChoice(status);

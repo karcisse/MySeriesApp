@@ -19,7 +19,7 @@ import com.karcisse.myseriesappv2.data.Series;
 
 import java.util.List;
 
-// TODO: 02.11.17 Think about it 
+// TODO: 02.11.17 Think about it
 @SuppressWarnings("PMD.AccessorMethodGeneration")
 public class RecordSeriesFragment extends Fragment implements RecordSeriesContract.View {
 
@@ -104,7 +104,7 @@ public class RecordSeriesFragment extends Fragment implements RecordSeriesContra
         getFragmentManager().popBackStackImmediate();
     }
 
-    private void  closeKeyboard() {
+    private void closeKeyboard() {
         View view = getActivity().getCurrentFocus();
         if (view != null) {
             InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);

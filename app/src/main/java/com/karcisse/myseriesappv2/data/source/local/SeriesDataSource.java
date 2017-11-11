@@ -10,6 +10,6 @@ public interface SeriesDataSource {
     List<Series> getSeries();
     List<Series> getSeriesByStatus(Series.SeriesStatus status);
     Series getSeries(@NonNull String seriesId);
-    void  saveSeries(@NonNull Series series);
+    void saveSeries(@NonNull Series series);
     void deleteSeries(@NonNull String seriesId);
 }

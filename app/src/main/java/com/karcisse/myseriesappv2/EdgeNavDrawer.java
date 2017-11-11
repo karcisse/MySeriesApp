@@ -51,6 +51,8 @@ public class EdgeNavDrawer extends ListView implements AdapterView.OnItemClickLi
 //                activity = (SeriesActivity) getContext();
 //                activity.startActivity(intent);
                 break;
+            default:
+                break;
         }
     }
 
