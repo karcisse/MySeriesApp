@@ -51,10 +51,12 @@ public class SeriesListPresenter implements SeriesListContract.Presenter {
     public void decrementEpisode(String seriesId) {
         Series series = repository.getSeries(seriesId);
 
-        Series newSeries = new Series(seriesId, series.getSeriesTitle(),
-                series.getSeasonNumber(), series.getEpisodeNumber() - 1, Series.SeriesStatus.WATCHING);
+        if (series.getEpisodeNumber() != 0) {
+            Series newSeries = new Series(seriesId, series.getSeriesTitle(),
+                    series.getSeasonNumber(), series.getEpisodeNumber() - 1, Series.SeriesStatus.WATCHING);
 
-        repository.saveSeries(newSeries);
+            repository.saveSeries(newSeries);
+        }
     }
 
     @Override
@@ -71,10 +73,12 @@ public class SeriesListPresenter implements SeriesListContract.Presenter {
     public void decrementSeason(String seriesId) {
         Series series = repository.getSeries(seriesId);
 
-        Series newSeries = new Series(seriesId, series.getSeriesTitle(),
-                series.getSeasonNumber() - 1, series.getEpisodeNumber(), Series.SeriesStatus.WATCHING);
+        if (series.getSeasonNumber() != 0) {
+            Series newSeries = new Series(seriesId, series.getSeriesTitle(),
+                    series.getSeasonNumber() - 1, series.getEpisodeNumber(), Series.SeriesStatus.WATCHING);
 
-        repository.saveSeries(newSeries);
+            repository.saveSeries(newSeries);
+        }
     }
 
     @Override
