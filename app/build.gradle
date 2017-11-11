@@ -33,7 +33,7 @@ dependencies {
 check {
     abortOnError true
     checkstyle {
-        config hard()
+        config "$rootProject.rootDir/quality/checkstyle-ruleset.xml"
         report new File(project.buildDir, 'reports/checkstyle')
     }
     findbugs {
@@ -41,7 +41,7 @@ check {
         report new File(project.buildDir, 'reports/findbugs')
     }
     pmd {
-        config hard()
+        config "$rootProject.rootDir/quality/pmd-ruleset.xml"
         report new File(project.buildDir, 'reports/pmd')
     }
 }
