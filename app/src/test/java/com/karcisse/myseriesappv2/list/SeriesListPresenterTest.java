@@ -13,6 +13,8 @@ import java.util.List;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -21,6 +23,7 @@ public class SeriesListPresenterTest {
     private static final String SERIES_ID_ASSERT_MESSAGE = "Series id should be equal";
     private static final String SERIES_STATUS_WATCHING_ASSERT_MESSAGE = "Series status should equal watching";
     private static final String SERIES_TITLE_ASSERT_MESSAGE = "Series title should be equal";
+    private static final String SERIES_TITLE = "title";
 
     @Mock private SeriesRepository repository;
     @Mock private SeriesListContract.View view;
@@ -159,15 +162,31 @@ public class SeriesListPresenterTest {
         assertThat("List size should be 15", seriesList.size(), is(15));
     }
 
+    @Test
+    public void testDecrementEpisodeToNegative() {
+        Series baseSeries = new Series("id", SERIES_TITLE, 1, 0, Series.SeriesStatus.ARRIVING);
+        when(repository.getSeries("id")).thenReturn(baseSeries);
+        presenter.decrementEpisode("id");
+        verify(repository, never()).saveSeries(any(Series.class));
+    }
+
+    @Test
+    public void testDecrementSeasonToNegative() {
+        Series baseSeries = new Series("id", SERIES_TITLE, 0, 0, Series.SeriesStatus.ARRIVING);
+        when(repository.getSeries("id")).thenReturn(baseSeries);
+        presenter.decrementSeason("id");
+        verify(repository, never()).saveSeries(any(Series.class));
+    }
+
     private Series getSeries() {
-        return new Series("id", "title", 1, 2, Series.SeriesStatus.ARRIVING);
+        return new Series("id", SERIES_TITLE, 1, 2, Series.SeriesStatus.ARRIVING);
     }
 
     private List<Series> getSeriesList(int start, int stop, Series.SeriesStatus status) {
         List<Series> seriesList = new ArrayList<>();
 
         for (int i = start; i < stop; i++) {
-            seriesList.add(new Series("id" + i, "title" + i, 2 * i, i, status));
+            seriesList.add(new Series("id" + i, SERIES_TITLE + i, 2 * i, i, status));
         }
 
         return seriesList;
