@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.karcisse.myseriesappv2.MySeriesActivity;
@@ -20,14 +21,18 @@ public class SeriesListFragment extends Fragment implements SeriesListContract.V
 
     private SeriesAdapter adapter;
 
+    private ListView seriesListView;
+    private ImageView placeholder;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_series_list, container, false);
 
-        ListView seriesListView = (ListView) root.findViewById(R.id.series_list_view);
+        seriesListView = (ListView) root.findViewById(R.id.series_list_view);
         adapter = new SeriesAdapter(setUpCallback());
         seriesListView.setAdapter(adapter);
+        placeholder = (ImageView) root.findViewById(R.id.list_placeholder);
 
         return root;
     }
@@ -105,6 +110,18 @@ public class SeriesListFragment extends Fragment implements SeriesListContract.V
                 adapter.closeItem(seriesId);
                 presenter.refresh();
             }
+
+            @Override
+            public void onEmptyList() {
+                seriesListView.setVisibility(View.GONE);
+                placeholder.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onNotEmptyList() {
+                seriesListView.setVisibility(View.VISIBLE);
+                placeholder.setVisibility(View.GONE);
+            }
         };
     }
 
@@ -120,5 +137,7 @@ public class SeriesListFragment extends Fragment implements SeriesListContract.V
         void changeStatus(String seriesId, Series.SeriesStatus status);
         void deleteSeries(String seriesId);
         void close(String seriesId);
+        void onEmptyList();
+        void onNotEmptyList();
     }
 }
