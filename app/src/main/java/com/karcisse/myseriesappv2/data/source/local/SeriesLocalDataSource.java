@@ -109,8 +109,7 @@ public final class SeriesLocalDataSource implements SeriesDataSource {
         values.put(SeriesPersistenceContract.SeriesEntry.SERIES_EPISODE, series.getEpisodeNumber());
         values.put(SeriesPersistenceContract.SeriesEntry.SERIES_STATUS, series.getSeriesStatus().name());
 
-        // TODO: 11.10.17 update
-        db.insertWithOnConflict(SeriesPersistenceContract.SeriesEntry.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+        db.update(SeriesPersistenceContract.SeriesEntry.TABLE_NAME, values, null, null);
         db.close();
     }
 
