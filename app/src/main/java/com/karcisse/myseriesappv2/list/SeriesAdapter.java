@@ -41,6 +41,11 @@ public class SeriesAdapter extends BaseAdapter {
     public void setData(List<Series> seriesList) {
         data = seriesList;
         notifyDataSetChanged();
+        if (data.isEmpty()) {
+            callback.onEmptyList();
+        } else {
+            callback.onNotEmptyList();
+        }
     }
 
     @Override
