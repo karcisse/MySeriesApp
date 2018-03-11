@@ -53,8 +53,6 @@ public class SeriesListFragment extends Fragment implements SeriesListContract.V
         presenter.start();
     }
 
-    // TODO: 02.11.17 Think about it
-    @SuppressWarnings({"PMD.ModifiedCyclomaticComplexity", "PMD.StdCyclomaticComplexity", "PMD.AccessorMethodGeneration"})
     private Callback setUpCallback() {
         return new Callback() {
             @Override

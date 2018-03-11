@@ -20,8 +20,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-// TODO: 02.11.17 Think about it
-@SuppressWarnings("PMD.AccessorMethodGeneration")
 public class SeriesAdapter extends BaseAdapter {
 
     private static final String EDIT_TAG = "editing";
@@ -135,90 +133,13 @@ public class SeriesAdapter extends BaseAdapter {
         }
     }
 
-    // TODO: 02.11.17 Think about it
-    @SuppressWarnings({"PMD.ModifiedCyclomaticComplexity", "PMD.StdCyclomaticComplexity"})
     private void setUpEditSeriesRow(View editRow, ViewGroup parent, final String seriesId, Series.SeriesStatus status,
                                     final TextView episode, final TextView season, final TextView seriesStatus) {
 
-        editRow.findViewById(R.id.dec_episode).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                callback.decrementEpisode(seriesId);
-                decrementNumberValue(episode);
-            }
-        });
-
-        editRow.findViewById(R.id.inc_episode).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                callback.incrementEpisode(seriesId);
-                incrementNumberValue(episode);
-            }
-        });
-
-        editRow.findViewById(R.id.dec_season).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                callback.decrementSeason(seriesId);
-                decrementNumberValue(season);
-            }
-
-        });
-
-        editRow.findViewById(R.id.inc_season).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                callback.incrementSeason(seriesId);
-                incrementNumberValue(season);
-            }
-        });
-
-        editRow.findViewById(R.id.edit_series).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                callback.showEditScreen(seriesId);
-            }
-        });
-
-        editRow.findViewById(R.id.delete_series).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                callback.deleteSeries(seriesId);
-            }
-        });
-
-        editRow.findViewById(R.id.close).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                callback.close(seriesId);
-            }
-        });
-
-        Spinner statusSpinner = (Spinner) editRow.findViewById(R.id.status_menu);
-
-        final ArrayAdapter<SeriesStatusSpinnerChoice> arrayAdapter =
-                new ArrayAdapter<>(parent.getContext(), android.R.layout.simple_spinner_item,
-                        setSeriesStatusesSpinnerChoices(parent.getContext()));
-
-        statusSpinner.setAdapter(arrayAdapter);
-
-        statusSpinner.setSelection(arrayAdapter.getPosition(new SeriesStatusSpinnerChoice(status)));
-
-        statusSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                SeriesStatusSpinnerChoice spinnerChoice = arrayAdapter.getItem(position);
-                if (spinnerChoice != null) {
-                    callback.changeStatus(seriesId, spinnerChoice.getStatus());
-                    setSeriesStatus(seriesStatus, spinnerChoice.getStatus());
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                //nothing to do
-            }
-        });
+        setUpEpisodeChangeListener(editRow, seriesId, episode);
+        setUpSeasonChangeListener(editRow, seriesId, season);
+        setUpRowControlListener(editRow, seriesId);
+        setUpStatusSpinner(editRow, parent, seriesId, status, seriesStatus);
 
         editRow.setTag(EDIT_TAG);
     }
@@ -257,5 +178,94 @@ public class SeriesAdapter extends BaseAdapter {
     private void setSeriesStatus(TextView seriesStatus, Series.SeriesStatus status) {
         seriesStatus.setText(Series.SeriesStatus.getStringResId(status));
         seriesStatus.setTextColor(getColorForStatus(status));
+    }
+
+    private void setUpEpisodeChangeListener(View editRow, final String seriesId, final TextView episode) {
+        editRow.findViewById(R.id.dec_episode).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callback.decrementEpisode(seriesId);
+                decrementNumberValue(episode);
+            }
+        });
+
+        editRow.findViewById(R.id.inc_episode).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callback.incrementEpisode(seriesId);
+                incrementNumberValue(episode);
+            }
+        });
+    }
+
+    private void setUpSeasonChangeListener(View editRow, final String seriesId, final TextView season) {
+        editRow.findViewById(R.id.dec_season).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callback.decrementSeason(seriesId);
+                decrementNumberValue(season);
+            }
+
+        });
+
+        editRow.findViewById(R.id.inc_season).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callback.incrementSeason(seriesId);
+                incrementNumberValue(season);
+            }
+        });
+    }
+
+    private void setUpRowControlListener(View editRow, final String seriesId) {
+        editRow.findViewById(R.id.edit_series).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callback.showEditScreen(seriesId);
+            }
+        });
+
+        editRow.findViewById(R.id.delete_series).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callback.deleteSeries(seriesId);
+            }
+        });
+
+        editRow.findViewById(R.id.close).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callback.close(seriesId);
+            }
+        });
+    }
+
+    private void setUpStatusSpinner(View editRow, ViewGroup parent, final String seriesId, Series.SeriesStatus status,
+                                    final TextView seriesStatus) {
+        Spinner statusSpinner = (Spinner) editRow.findViewById(R.id.status_menu);
+
+        final ArrayAdapter<SeriesStatusSpinnerChoice> arrayAdapter =
+                new ArrayAdapter<>(parent.getContext(), android.R.layout.simple_spinner_item,
+                        setSeriesStatusesSpinnerChoices(parent.getContext()));
+
+        statusSpinner.setAdapter(arrayAdapter);
+
+        statusSpinner.setSelection(arrayAdapter.getPosition(new SeriesStatusSpinnerChoice(status)));
+
+        statusSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                SeriesStatusSpinnerChoice spinnerChoice = arrayAdapter.getItem(position);
+                if (spinnerChoice != null) {
+                    callback.changeStatus(seriesId, spinnerChoice.getStatus());
+                    setSeriesStatus(seriesStatus, spinnerChoice.getStatus());
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                //nothing to do
+            }
+        });
     }
 }
