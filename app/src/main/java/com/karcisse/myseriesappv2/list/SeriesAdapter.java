@@ -2,6 +2,7 @@ package com.karcisse.myseriesappv2.list;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,44 +17,27 @@ import com.karcisse.myseriesappv2.SeriesStatusSpinnerChoice;
 import com.karcisse.myseriesappv2.data.Series;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class SeriesAdapter extends BaseAdapter {
 
     private static final String EDIT_TAG = "editing";
 
-    private List<Series> data;
-    private final SeriesListFragment.Callback callback;
+    private final SeriesListContract.Presenter presenter;
 
-    private final Set<String> openedEdits;
-
-    public SeriesAdapter(SeriesListFragment.Callback callback) {
+    public SeriesAdapter(@NonNull SeriesListContract.Presenter presenter) {
         super();
-        this.callback = callback;
-        data = new ArrayList<>();
-        openedEdits = new HashSet<>();
-    }
-
-    public void setData(List<Series> seriesList) {
-        data = seriesList;
-        notifyDataSetChanged();
-        if (data.isEmpty()) {
-            callback.onEmptyList();
-        } else {
-            callback.onNotEmptyList();
-        }
+        this.presenter = presenter;
     }
 
     @Override
     public int getCount() {
-        return data.size();
+        return presenter.getDataSize();
     }
 
     @Override
     public Series getItem(int position) {
-        return data.get(position);
+        return presenter.getItemAt(position);
     }
 
     @Override
@@ -64,6 +48,9 @@ public class SeriesAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, final ViewGroup parent) {
         final Series series = getItem(position);
+        if (series.getId() == null) {
+            return null; // This should never happen
+        }
 
         View row = convertView;
         if (row == null) {
@@ -86,18 +73,21 @@ public class SeriesAdapter extends BaseAdapter {
         row.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                callback.onLongClick(series.getId());
+                String seriesId = series.getId();
+                if (seriesId != null) {
+                    presenter.showRecordSeries(series.getId());
+                }
                 return true;
             }
         });
         row.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                callback.onClick(position);
+                presenter.openItem(getItem(position).getId());
             }
         });
 
-        if (openedEdits.contains(series.getId())) {
+        if (presenter.isRowEdited(series.getId())) {
             row.findViewById(R.id.edit_series_view).setVisibility(View.VISIBLE);
             setUpEditSeriesRow(row, parent, series.getId(), series.getSeriesStatus(),
                     episodeNumber, seasonNumber, seriesStatus);
@@ -106,14 +96,6 @@ public class SeriesAdapter extends BaseAdapter {
         }
 
         return row;
-    }
-
-    public void closeItem(String seriesId) {
-        openedEdits.remove(seriesId);
-    }
-
-    public void openItem(String seriesId) {
-        openedEdits.add(seriesId);
     }
 
     private int getColorForStatus(Series.SeriesStatus status) {
@@ -184,7 +166,7 @@ public class SeriesAdapter extends BaseAdapter {
         editRow.findViewById(R.id.dec_episode).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                callback.decrementEpisode(seriesId);
+                presenter.decrementEpisode(seriesId);
                 decrementNumberValue(episode);
             }
         });
@@ -192,7 +174,7 @@ public class SeriesAdapter extends BaseAdapter {
         editRow.findViewById(R.id.inc_episode).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                callback.incrementEpisode(seriesId);
+                presenter.incrementEpisode(seriesId);
                 incrementNumberValue(episode);
             }
         });
@@ -202,7 +184,7 @@ public class SeriesAdapter extends BaseAdapter {
         editRow.findViewById(R.id.dec_season).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                callback.decrementSeason(seriesId);
+                presenter.decrementSeason(seriesId);
                 decrementNumberValue(season);
             }
 
@@ -211,7 +193,7 @@ public class SeriesAdapter extends BaseAdapter {
         editRow.findViewById(R.id.inc_season).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                callback.incrementSeason(seriesId);
+                presenter.incrementSeason(seriesId);
                 incrementNumberValue(season);
             }
         });
@@ -221,21 +203,21 @@ public class SeriesAdapter extends BaseAdapter {
         editRow.findViewById(R.id.edit_series).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                callback.showEditScreen(seriesId);
+                presenter.showEditScreen(seriesId);
             }
         });
 
         editRow.findViewById(R.id.delete_series).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                callback.deleteSeries(seriesId);
+                presenter.deleteSeries(seriesId);
             }
         });
 
         editRow.findViewById(R.id.close).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                callback.close(seriesId);
+                presenter.closeItem(seriesId);
             }
         });
     }
@@ -257,7 +239,7 @@ public class SeriesAdapter extends BaseAdapter {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 SeriesStatusSpinnerChoice spinnerChoice = arrayAdapter.getItem(position);
                 if (spinnerChoice != null) {
-                    callback.changeStatus(seriesId, spinnerChoice.getStatus());
+                    SeriesAdapter.this.presenter.changeStatus(seriesId, spinnerChoice.getStatus());
                     setSeriesStatus(seriesStatus, spinnerChoice.getStatus());
                 }
             }

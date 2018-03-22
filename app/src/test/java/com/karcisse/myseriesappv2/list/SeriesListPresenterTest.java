@@ -33,24 +33,35 @@ public class SeriesListPresenterTest {
     @Before
     public void setUp() {
         initMocks(this);
-        when(repository.getSeriesByStatus(Series.SeriesStatus.WATCHING)).thenReturn(getSeriesList(0, 3, Series.SeriesStatus.WATCHING));
-        when(repository.getSeriesByStatus(Series.SeriesStatus.ARRIVING)).thenReturn(getSeriesList(3, 6, Series.SeriesStatus.ARRIVING));
-        when(repository.getSeriesByStatus(Series.SeriesStatus.TO_WATCH)).thenReturn(getSeriesList(6, 9, Series.SeriesStatus.TO_WATCH));
-        when(repository.getSeriesByStatus(Series.SeriesStatus.COMPLETE)).thenReturn(getSeriesList(9, 12, Series.SeriesStatus.COMPLETE));
-        when(repository.getSeriesByStatus(Series.SeriesStatus.DROPPED)).thenReturn(getSeriesList(12, 15, Series.SeriesStatus.DROPPED));
 
         presenter = new SeriesListPresenter(view, repository);
     }
 
     @Test
     public void testStartPresenter() {
+        when(repository.getSeriesByStatus(Series.SeriesStatus.WATCHING)).thenReturn(getSeriesList(0, 3, Series.SeriesStatus.WATCHING));
+        when(repository.getSeriesByStatus(Series.SeriesStatus.ARRIVING)).thenReturn(getSeriesList(3, 6, Series.SeriesStatus.ARRIVING));
+        when(repository.getSeriesByStatus(Series.SeriesStatus.TO_WATCH)).thenReturn(getSeriesList(6, 9, Series.SeriesStatus.TO_WATCH));
+        when(repository.getSeriesByStatus(Series.SeriesStatus.COMPLETE)).thenReturn(getSeriesList(9, 12, Series.SeriesStatus.COMPLETE));
+        when(repository.getSeriesByStatus(Series.SeriesStatus.DROPPED)).thenReturn(getSeriesList(12, 15, Series.SeriesStatus.DROPPED));
+
         presenter.start();
 
-        ArgumentCaptor<List<Series>> seriesListCaptor = ArgumentCaptor.forClass(List.class);
-        verify(view).showSeriesList(seriesListCaptor.capture());
-        List<Series> seriesList = seriesListCaptor.getValue();
+        verify(view).showSeriesList();
+        verify(view).onNotEmptyList();
+    }
 
-        assertThat("List size should be 15", seriesList.size(), is(15));
+    @Test
+    public void testStartPresenterEmptyList() {
+        when(repository.getSeriesByStatus(Series.SeriesStatus.WATCHING)).thenReturn(new ArrayList<Series>());
+        when(repository.getSeriesByStatus(Series.SeriesStatus.ARRIVING)).thenReturn(new ArrayList<Series>());
+        when(repository.getSeriesByStatus(Series.SeriesStatus.TO_WATCH)).thenReturn(new ArrayList<Series>());
+        when(repository.getSeriesByStatus(Series.SeriesStatus.COMPLETE)).thenReturn(new ArrayList<Series>());
+        when(repository.getSeriesByStatus(Series.SeriesStatus.DROPPED)).thenReturn(new ArrayList<Series>());
+
+        presenter.start();
+
+        verify(view).onEmptyList();
     }
 
     @Test
@@ -149,17 +160,6 @@ public class SeriesListPresenterTest {
     public void testDeleteSeries() {
         presenter.deleteSeries("id3");
         verify(repository).deleteSeries("id3");
-    }
-
-    @Test
-    public void testRefresh() {
-        presenter.refresh();
-
-        ArgumentCaptor<List<Series>> seriesListCaptor = ArgumentCaptor.forClass(List.class);
-        verify(view).showSeriesList(seriesListCaptor.capture());
-        List<Series> seriesList = seriesListCaptor.getValue();
-
-        assertThat("List size should be 15", seriesList.size(), is(15));
     }
 
     @Test

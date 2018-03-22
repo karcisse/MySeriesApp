@@ -1,15 +1,19 @@
 package com.karcisse.myseriesappv2.list;
 
+import android.support.annotation.NonNull;
+
 import com.karcisse.myseriesappv2.BasePresenter;
 import com.karcisse.myseriesappv2.BaseView;
 import com.karcisse.myseriesappv2.data.Series;
 
-import java.util.List;
-
 public interface SeriesListContract {
 
     interface View extends BaseView<Presenter> {
-        void showSeriesList(List<Series> seriesList);
+        void showSeriesList();
+        void showRecordSeries(String seriesId);
+        void showEditScreen(String seriesId);
+        void onEmptyList();
+        void onNotEmptyList();
     }
 
     interface Presenter extends BasePresenter {
@@ -19,6 +23,12 @@ public interface SeriesListContract {
         void decrementSeason(String seriesId);
         void changeStatus(String seriesId, Series.SeriesStatus status);
         void deleteSeries(String seriesId);
-        void refresh();
+        void closeItem(String seriesId);
+        void openItem(String seriesId);
+        void showRecordSeries(@NonNull String seriesId);
+        boolean isRowEdited(@NonNull String id);
+        int getDataSize();
+        void showEditScreen(String seriesId);
+        Series getItemAt(int position);
     }
 }

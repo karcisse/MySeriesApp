@@ -6,35 +6,29 @@ import com.karcisse.myseriesappv2.data.Series;
 import com.karcisse.myseriesappv2.data.source.SeriesRepository;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class SeriesListPresenter implements SeriesListContract.Presenter {
 
     @NonNull private final SeriesRepository repository;
     @NonNull private final SeriesListContract.View view;
+    @NonNull private final List<Series> data;
+    @NonNull private final Set<String> openedEdits;
 
     public SeriesListPresenter(@NonNull SeriesListContract.View view,
                                @NonNull SeriesRepository repository) {
         this.repository = repository;
         this.view = view;
+        this.data = new ArrayList<>();
+        openedEdits = new HashSet<>();
         this.view.setPresenter(this);
     }
 
     @Override
     public void start() {
         loadSeries();
-    }
-
-    private void loadSeries() {
-        List<Series> seriesList = new ArrayList<>();
-
-        seriesList.addAll(repository.getSeriesByStatus(Series.SeriesStatus.WATCHING));
-        seriesList.addAll(repository.getSeriesByStatus(Series.SeriesStatus.ARRIVING));
-        seriesList.addAll(repository.getSeriesByStatus(Series.SeriesStatus.TO_WATCH));
-        seriesList.addAll(repository.getSeriesByStatus(Series.SeriesStatus.COMPLETE));
-        seriesList.addAll(repository.getSeriesByStatus(Series.SeriesStatus.DROPPED));
-
-        view.showSeriesList(seriesList);
     }
 
     @Override
@@ -98,7 +92,59 @@ public class SeriesListPresenter implements SeriesListContract.Presenter {
     }
 
     @Override
-    public void refresh() {
+    public void closeItem(String seriesId) {
+        openedEdits.remove(seriesId);
+        refresh();
+    }
+
+    @Override
+    public void openItem(String seriesId) {
+        openedEdits.add(seriesId);
+        refresh();
+    }
+
+    @Override
+    public void showRecordSeries(@NonNull String seriesId) {
+        view.showRecordSeries(seriesId);
+    }
+
+    @Override
+    public boolean isRowEdited(@NonNull String id) {
+        return openedEdits.contains(id);
+    }
+
+    @Override
+    public int getDataSize() {
+        return data.size();
+    }
+
+    @Override
+    public void showEditScreen(String seriesId) {
+        view.showEditScreen(seriesId);
+    }
+
+    @Override
+    public Series getItemAt(int position) {
+        return data.get(position);
+    }
+
+    private void loadSeries() {
+        data.clear();
+        data.addAll(repository.getSeriesByStatus(Series.SeriesStatus.WATCHING));
+        data.addAll(repository.getSeriesByStatus(Series.SeriesStatus.ARRIVING));
+        data.addAll(repository.getSeriesByStatus(Series.SeriesStatus.TO_WATCH));
+        data.addAll(repository.getSeriesByStatus(Series.SeriesStatus.COMPLETE));
+        data.addAll(repository.getSeriesByStatus(Series.SeriesStatus.DROPPED));
+
+        if (data.isEmpty()) {
+            view.onEmptyList();
+        } else {
+            view.showSeriesList();
+            view.onNotEmptyList();
+        }
+    }
+
+    private void refresh() {
         loadSeries();
     }
 }
