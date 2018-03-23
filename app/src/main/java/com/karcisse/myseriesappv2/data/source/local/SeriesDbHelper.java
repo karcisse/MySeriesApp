@@ -31,6 +31,6 @@ public class SeriesDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // TODO: 11.10.17 implement if needed
+        // implement if needed
     }
 }

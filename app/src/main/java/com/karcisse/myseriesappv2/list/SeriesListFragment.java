@@ -11,9 +11,6 @@ import android.widget.ListView;
 
 import com.karcisse.myseriesappv2.MySeriesActivity;
 import com.karcisse.myseriesappv2.R;
-import com.karcisse.myseriesappv2.data.Series;
-
-import java.util.List;
 
 public class SeriesListFragment extends Fragment implements SeriesListContract.View {
 
@@ -30,7 +27,6 @@ public class SeriesListFragment extends Fragment implements SeriesListContract.V
         View root = inflater.inflate(R.layout.fragment_series_list, container, false);
 
         seriesListView = (ListView) root.findViewById(R.id.series_list_view);
-        adapter = new SeriesAdapter(setUpCallback());
         seriesListView.setAdapter(adapter);
         placeholder = (ImageView) root.findViewById(R.id.list_placeholder);
 
@@ -40,11 +36,12 @@ public class SeriesListFragment extends Fragment implements SeriesListContract.V
     @Override
     public void setPresenter(SeriesListContract.Presenter presenter) {
         this.presenter = presenter;
+        adapter = new SeriesAdapter(this.presenter);
     }
 
     @Override
-    public void showSeriesList(List<Series> seriesList) {
-        adapter.setData(seriesList);
+    public void showSeriesList() {
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -53,91 +50,25 @@ public class SeriesListFragment extends Fragment implements SeriesListContract.V
         presenter.start();
     }
 
-    // TODO: 02.11.17 Think about it
-    @SuppressWarnings({"PMD.ModifiedCyclomaticComplexity", "PMD.StdCyclomaticComplexity", "PMD.AccessorMethodGeneration"})
-    private Callback setUpCallback() {
-        return new Callback() {
-            @Override
-            public void onLongClick(String seriesId) {
-                ((MySeriesActivity) getActivity()).showRecordSeries(seriesId);
-            }
-
-            @Override
-            public void onClick(int position) {
-                adapter.openItem(adapter.getItem(position).getId());
-                presenter.refresh();
-            }
-
-            @Override
-            public void incrementEpisode(String seriesId) {
-                presenter.incrementEpisode(seriesId);
-            }
-
-            @Override
-            public void decrementEpisode(String seriesId) {
-                presenter.decrementEpisode(seriesId);
-            }
-
-            @Override
-            public void incrementSeason(String seriesId) {
-                presenter.incrementSeason(seriesId);
-            }
-
-            @Override
-            public void decrementSeason(String seriesId) {
-                presenter.decrementSeason(seriesId);
-            }
-
-            @Override
-            public void showEditScreen(String seriesId) {
-                ((MySeriesActivity) getActivity()).showRecordSeries(seriesId);
-            }
-
-            @Override
-            public void changeStatus(String seriesId, Series.SeriesStatus status) {
-                presenter.changeStatus(seriesId, status);
-            }
-
-            @Override
-            public void deleteSeries(String seriesId) {
-                presenter.deleteSeries(seriesId);
-                adapter.closeItem(seriesId);
-                presenter.refresh();
-            }
-
-            @Override
-            public void close(String seriesId) {
-                adapter.closeItem(seriesId);
-                presenter.refresh();
-            }
-
-            @Override
-            public void onEmptyList() {
-                seriesListView.setVisibility(View.GONE);
-                placeholder.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onNotEmptyList() {
-                seriesListView.setVisibility(View.VISIBLE);
-                placeholder.setVisibility(View.GONE);
-            }
-        };
+    @Override
+    public void showRecordSeries(String seriesId) {
+        ((MySeriesActivity) getActivity()).showRecordSeries(seriesId);
     }
 
-    public interface Callback {
-        void onLongClick(String seriesId);
-        void onClick(int pos);
+    @Override
+    public void showEditScreen(String seriesId) {
+        ((MySeriesActivity) getActivity()).showRecordSeries(seriesId);
+    }
 
-        void incrementEpisode(String seriesId);
-        void decrementEpisode(String seriesId);
-        void incrementSeason(String seriesId);
-        void decrementSeason(String seriesId);
-        void showEditScreen(String seriesId);
-        void changeStatus(String seriesId, Series.SeriesStatus status);
-        void deleteSeries(String seriesId);
-        void close(String seriesId);
-        void onEmptyList();
-        void onNotEmptyList();
+    @Override
+    public void onEmptyList() {
+        seriesListView.setVisibility(View.GONE);
+        placeholder.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onNotEmptyList() {
+        seriesListView.setVisibility(View.VISIBLE);
+        placeholder.setVisibility(View.GONE);
     }
 }

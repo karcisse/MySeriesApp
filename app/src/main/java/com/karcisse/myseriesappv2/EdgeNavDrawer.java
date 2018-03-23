@@ -8,7 +8,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-// TODO: 11.10.17 is it necessary? For sure improve
 public class EdgeNavDrawer extends ListView implements AdapterView.OnItemClickListener {
     private final LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     private final View snapshot = inflater.inflate(R.layout.drawer_list_header, this, false);
