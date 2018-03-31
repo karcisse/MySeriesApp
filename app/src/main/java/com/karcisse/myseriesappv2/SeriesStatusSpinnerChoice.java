@@ -24,7 +24,7 @@ public class SeriesStatusSpinnerChoice {
 
     /**
      * Method overridden to display text in spinner
-     * @return
+     * @return spinner item string
      */
     @Override
     public String toString() {

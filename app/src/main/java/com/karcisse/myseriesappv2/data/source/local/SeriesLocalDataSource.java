@@ -23,30 +23,8 @@ public final class SeriesLocalDataSource implements SeriesDataSource {
     }
 
     @NonNull
-    public List<Series> getSeries() {
-        List<Series> seriesList = new ArrayList<>();
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-        Cursor c = db.query(SeriesPersistenceContract.SeriesEntry.TABLE_NAME,
-                null, null, null, null, null, null);
-
-        if (c != null && c.getCount() > 0) {
-            while (c.moveToNext()) {
-                seriesList.add(getSeriesFromCursor(c));
-            }
-        }
-
-        if (c != null) {
-            c.close();
-        }
-
-        db.close();
-
-        return seriesList;
-    }
-
     @Override
-    public List<Series> getSeriesByStatus(Series.Status status) {
+    public List<Series> getSeriesByStatus(@NonNull Series.Status status) {
         List<Series> seriesList = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 

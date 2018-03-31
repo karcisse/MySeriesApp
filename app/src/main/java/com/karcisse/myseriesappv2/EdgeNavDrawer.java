@@ -35,7 +35,7 @@ public class EdgeNavDrawer extends ListView implements AdapterView.OnItemClickLi
 
     private void setUpList() {
         String[] osArray = {"New series", "Settings"};
-        ArrayAdapter<String> mAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, osArray);
+        ArrayAdapter<String> mAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, osArray);
         setAdapter(mAdapter);
     }
 

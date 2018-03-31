@@ -1,6 +1,7 @@
 package com.karcisse.myseriesappv2.data.source;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.karcisse.myseriesappv2.data.Series;
 import com.karcisse.myseriesappv2.data.source.local.SeriesDataSource;
@@ -22,18 +23,15 @@ public class SeriesRepositoryImpl implements SeriesRepository {
         seriesDataSource.saveSeries(series);
     }
 
+    @Nullable
     @Override
     public Series getSeries(@NonNull String seriesId) {
         return seriesDataSource.getSeries(seriesId);
     }
 
+    @NonNull
     @Override
-    public List<Series> getSeries() {
-        return seriesDataSource.getSeries();
-    }
-
-    @Override
-    public List<Series> getSeriesByStatus(Series.Status status) {
+    public List<Series> getSeriesByStatus(@NonNull Series.Status status) {
         List<Series> seriesList = seriesDataSource.getSeriesByStatus(status);
 
         Collections.sort(seriesList, new Comparator<Series>() {
@@ -47,7 +45,7 @@ public class SeriesRepositoryImpl implements SeriesRepository {
     }
 
     @Override
-    public void deleteSeries(String seriesId) {
+    public void deleteSeries(@NonNull String seriesId) {
         seriesDataSource.deleteSeries(seriesId);
     }
 

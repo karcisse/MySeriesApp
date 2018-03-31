@@ -33,8 +33,11 @@ public class SeriesListPresenter implements SeriesListContract.Presenter {
     }
 
     @Override
-    public void incrementEpisode(String seriesId) {
+    public void incrementEpisode(@NonNull String seriesId) {
         Series series = repository.getSeries(seriesId);
+        if (series == null) {
+            return;
+        }
 
         Series newSeries = new Series(seriesId, series.getSeriesTitle(),
                 series.getSeasonNumber(), series.getEpisodeNumber() + 1, Series.Status.WATCHING);
@@ -43,8 +46,11 @@ public class SeriesListPresenter implements SeriesListContract.Presenter {
     }
 
     @Override
-    public void decrementEpisode(String seriesId) {
+    public void decrementEpisode(@NonNull String seriesId) {
         Series series = repository.getSeries(seriesId);
+        if (series == null) {
+            return;
+        }
 
         if (series.getEpisodeNumber() != 0) {
             Series newSeries = new Series(seriesId, series.getSeriesTitle(),
@@ -55,8 +61,11 @@ public class SeriesListPresenter implements SeriesListContract.Presenter {
     }
 
     @Override
-    public void incrementSeason(String seriesId) {
+    public void incrementSeason(@NonNull String seriesId) {
         Series series = repository.getSeries(seriesId);
+        if (series == null) {
+            return;
+        }
 
         Series newSeries = new Series(seriesId, series.getSeriesTitle(),
                 series.getSeasonNumber() + 1, series.getEpisodeNumber(), Series.Status.WATCHING);
@@ -65,8 +74,11 @@ public class SeriesListPresenter implements SeriesListContract.Presenter {
     }
 
     @Override
-    public void decrementSeason(String seriesId) {
+    public void decrementSeason(@NonNull String seriesId) {
         Series series = repository.getSeries(seriesId);
+        if (series == null) {
+            return;
+        }
 
         if (series.getSeasonNumber() != 0) {
             Series newSeries = new Series(seriesId, series.getSeriesTitle(),
@@ -77,8 +89,11 @@ public class SeriesListPresenter implements SeriesListContract.Presenter {
     }
 
     @Override
-    public void changeStatus(String seriesId, Series.Status status) {
+    public void changeStatus(@NonNull String seriesId, @NonNull Series.Status status) {
         Series series = repository.getSeries(seriesId);
+        if (series == null) {
+            return;
+        }
 
         Series newSeries = new Series(seriesId, series.getSeriesTitle(),
                 series.getSeasonNumber(), series.getEpisodeNumber(), status);
@@ -87,13 +102,13 @@ public class SeriesListPresenter implements SeriesListContract.Presenter {
     }
 
     @Override
-    public void deleteSeries(String seriesId) {
+    public void deleteSeries(@NonNull String seriesId) {
         repository.deleteSeries(seriesId);
         loadSeries();
     }
 
     @Override
-    public void closeItem(String seriesId) {
+    public void closeItem(@NonNull String seriesId) {
         if (isRowEdited(seriesId)) {
             openedEdits.remove(seriesId);
             refresh();
@@ -101,8 +116,8 @@ public class SeriesListPresenter implements SeriesListContract.Presenter {
     }
 
     @Override
-    public void openItem(String seriesId) {
-        if (!isRowEdited(seriesId)) {
+    public void openItem(@Nullable String seriesId) {
+        if (seriesId != null && !isRowEdited(seriesId)) {
             openedEdits.add(seriesId);
             refresh();
         }
@@ -124,13 +139,18 @@ public class SeriesListPresenter implements SeriesListContract.Presenter {
     }
 
     @Override
-    public void showEditScreen(String seriesId) {
+    public void showEditScreen(@NonNull String seriesId) {
         view.showEditScreen(seriesId);
     }
 
+    @Nullable
     @Override
     public Series getItemAt(int position) {
-        return data.get(position);
+        try {
+            return data.get(position);
+        } catch (IndexOutOfBoundsException e) {
+            return null;
+        }
     }
 
     @Override

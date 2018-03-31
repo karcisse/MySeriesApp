@@ -32,7 +32,7 @@ public class RecordSeriesPresenter implements RecordSeriesContract.Presenter {
     }
 
     @Override
-    public void saveSeries(String title, String season, String episode, Series.Status status) {
+    public void saveSeries(@NonNull String title, @NonNull String season, @NonNull String episode, @NonNull Series.Status status) {
 
         if (title.isEmpty() || season.isEmpty() || episode.isEmpty()) {
             view.showErrorMessage();
@@ -50,7 +50,10 @@ public class RecordSeriesPresenter implements RecordSeriesContract.Presenter {
 
     private void loadSeriesData() {
         if (seriesId != null) {
-            view.showSeriesData(repository.getSeries(seriesId));
+            Series series = repository.getSeries(seriesId);
+            if (series != null) {
+                view.showSeriesData(series);
+            }
         }
     }
 
