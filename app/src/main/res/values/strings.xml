@@ -14,4 +14,6 @@
     <string name="dropped">Dropped</string>
     <string name="arriving">Arriving</string>
     <string name="fill_all_fields">Please fill all inputs</string>
+    <string name="search_hint">Look for your series …</string>
+    <string name="search_title">Search</string>
 </resources>

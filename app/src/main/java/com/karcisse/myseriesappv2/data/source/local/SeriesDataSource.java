@@ -12,4 +12,7 @@ public interface SeriesDataSource {
     Series getSeries(@NonNull String seriesId);
     void saveSeries(@NonNull Series series);
     void deleteSeries(@NonNull String seriesId);
+
+    @NonNull
+    List<Series> searchForSeries(@NonNull String searchQuery);
 }
