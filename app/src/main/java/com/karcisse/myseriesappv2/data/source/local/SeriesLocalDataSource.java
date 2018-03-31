@@ -130,6 +130,33 @@ public final class SeriesLocalDataSource implements SeriesDataSource {
         db.delete(SeriesPersistenceContract.SeriesEntry.TABLE_NAME, selection, selectionArgs);
     }
 
+    @NonNull
+    @Override
+    public List<Series> searchForSeries(@NonNull String seriesTitle) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        List<Series> seriesList = new ArrayList<>();
+
+        String selection = SeriesPersistenceContract.SeriesEntry.SERIES_TITLE + " LIKE ?";
+        String[] selectionArgs = {"%" + seriesTitle + "%"};
+
+        Cursor c = db.query(SeriesPersistenceContract.SeriesEntry.TABLE_NAME,
+                null, selection, selectionArgs, null, null, null);
+
+        if (c != null && c.getCount() > 0) {
+            while (c.moveToNext()) {
+                seriesList.add(getSeriesFromCursor(c));
+            }
+        }
+
+        if (c != null) {
+            c.close();
+        }
+
+        db.close();
+
+        return seriesList;
+    }
+
     private Series getSeriesFromCursor(Cursor c) {
         String seriesId = c.getString(c.getColumnIndexOrThrow(SeriesPersistenceContract.SeriesEntry.SERIES_ID));
         String title = c.getString(c.getColumnIndexOrThrow(SeriesPersistenceContract.SeriesEntry.SERIES_TITLE));

@@ -50,4 +50,10 @@ public class SeriesRepositoryImpl implements SeriesRepository {
     public void deleteSeries(String seriesId) {
         seriesDataSource.deleteSeries(seriesId);
     }
+
+    @NonNull
+    @Override
+    public List<Series> searchForSeries(@NonNull String searchQuery) {
+        return seriesDataSource.searchForSeries(searchQuery);
+    }
 }

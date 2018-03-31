@@ -31,5 +31,6 @@ public interface SeriesListContract {
         int getDataSize();
         void showEditScreen(String seriesId);
         Series getItemAt(int position);
+        void searchForSeries(@NonNull String searchQuery);
     }
 }

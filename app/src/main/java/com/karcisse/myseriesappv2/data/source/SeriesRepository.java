@@ -12,4 +12,7 @@ public interface SeriesRepository {
     List<Series> getSeries();
     List<Series> getSeriesByStatus(Series.Status status);
     void deleteSeries(String seriesId);
+
+    @NonNull
+    List<Series> searchForSeries(@NonNull String searchQuery);
 }

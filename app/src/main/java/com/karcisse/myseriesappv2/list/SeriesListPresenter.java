@@ -133,6 +133,13 @@ public class SeriesListPresenter implements SeriesListContract.Presenter {
         return data.get(position);
     }
 
+    @Override
+    public void searchForSeries(@NonNull String searchQuery) {
+        data.clear();
+        data.addAll(repository.searchForSeries(searchQuery));
+        showSeriesList();
+    }
+
     private void loadSeries() {
         data.clear();
         data.addAll(repository.getSeriesByStatus(Series.Status.WATCHING));
@@ -141,15 +148,19 @@ public class SeriesListPresenter implements SeriesListContract.Presenter {
         data.addAll(repository.getSeriesByStatus(Series.Status.COMPLETE));
         data.addAll(repository.getSeriesByStatus(Series.Status.DROPPED));
 
+        showSeriesList();
+    }
+
+    private void refresh() {
+        loadSeries();
+    }
+
+    private void showSeriesList() {
         if (data.isEmpty()) {
             view.onEmptyList();
         } else {
             view.showSeriesList();
             view.onNotEmptyList();
         }
-    }
-
-    private void refresh() {
-        loadSeries();
     }
 }
