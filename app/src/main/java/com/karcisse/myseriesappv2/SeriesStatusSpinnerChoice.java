@@ -5,16 +5,16 @@ import android.support.annotation.NonNull;
 import com.karcisse.myseriesappv2.data.Series;
 
 public class SeriesStatusSpinnerChoice {
-    @NonNull private final Series.SeriesStatus status;
+    @NonNull private final Series.Status status;
     @NonNull private String displayText;
 
-    public SeriesStatusSpinnerChoice(@NonNull Series.SeriesStatus status) {
+    public SeriesStatusSpinnerChoice(@NonNull Series.Status status) {
         this.status = status;
         this.displayText = "";
     }
 
     @NonNull
-    public Series.SeriesStatus getStatus() {
+    public Series.Status getStatus() {
         return status;
     }
 

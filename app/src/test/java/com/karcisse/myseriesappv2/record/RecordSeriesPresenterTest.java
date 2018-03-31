@@ -52,7 +52,7 @@ public class RecordSeriesPresenterTest {
 
         assertThat("Series title should be equal", series.getSeriesTitle(), is(baseSeries.getSeriesTitle()));
         assertThat("Series id should be equal", series.getId(), is(baseSeries.getId()));
-        assertThat("Series status should be equal", series.getSeriesStatus(), is(baseSeries.getSeriesStatus()));
+        assertThat("Series status should be equal", series.getStatus(), is(baseSeries.getStatus()));
         assertThat("Series episode number should be equal", series.getEpisodeNumber(), is(baseSeries.getEpisodeNumber()));
         assertThat("Series season number should be equal", series.getSeasonNumber(), is(baseSeries.getSeasonNumber()));
     }
@@ -75,7 +75,7 @@ public class RecordSeriesPresenterTest {
     public void testSaveNewSeriesWithoutError() {
         RecordSeriesContract.Presenter presenter = new RecordSeriesPresenter(view, repository, null);
 
-        presenter.saveSeries(SERIES_TITLE, "2", "3", Series.SeriesStatus.TO_WATCH);
+        presenter.saveSeries(SERIES_TITLE, "2", "3", Series.Status.TO_WATCH);
 
         verify(view, never()).showErrorMessage();
 
@@ -87,7 +87,7 @@ public class RecordSeriesPresenterTest {
 
         assertThat("Series title should be equal", series.getSeriesTitle(), is(baseSeries.getSeriesTitle()));
         assertThat("Series id should be equal", series.getId(), is(nullValue()));
-        assertThat("Series status should be equal", series.getSeriesStatus(), is(baseSeries.getSeriesStatus()));
+        assertThat("Series status should be equal", series.getStatus(), is(baseSeries.getStatus()));
         assertThat("Series episode number should be equal", series.getEpisodeNumber(), is(baseSeries.getEpisodeNumber()));
         assertThat("Series season number should be equal", series.getSeasonNumber(), is(baseSeries.getSeasonNumber()));
     }
@@ -96,7 +96,7 @@ public class RecordSeriesPresenterTest {
     public void testUpdateSeriesWithoutError() {
         RecordSeriesContract.Presenter presenter = new RecordSeriesPresenter(view, repository, SERIES_ID);
 
-        presenter.saveSeries(SERIES_TITLE, "2", "3", Series.SeriesStatus.TO_WATCH);
+        presenter.saveSeries(SERIES_TITLE, "2", "3", Series.Status.TO_WATCH);
 
         verify(view, never()).showErrorMessage();
 
@@ -108,7 +108,7 @@ public class RecordSeriesPresenterTest {
 
         assertThat("Series title should be equal", series.getSeriesTitle(), is(baseSeries.getSeriesTitle()));
         assertThat("Series id should be equal", series.getId(), is(baseSeries.getId()));
-        assertThat("Series status should be equal", series.getSeriesStatus(), is(baseSeries.getSeriesStatus()));
+        assertThat("Series status should be equal", series.getStatus(), is(baseSeries.getStatus()));
         assertThat("Series episode number should be equal", series.getEpisodeNumber(), is(baseSeries.getEpisodeNumber()));
         assertThat("Series season number should be equal", series.getSeasonNumber(), is(baseSeries.getSeasonNumber()));
     }
@@ -117,7 +117,7 @@ public class RecordSeriesPresenterTest {
     public void testSaveSeriesWithEmptySeasonError() {
         RecordSeriesContract.Presenter presenter = new RecordSeriesPresenter(view, repository, null);
 
-        presenter.saveSeries(SERIES_TITLE, "", "3", Series.SeriesStatus.TO_WATCH);
+        presenter.saveSeries(SERIES_TITLE, "", "3", Series.Status.TO_WATCH);
         verify(view).showErrorMessage();
     }
 
@@ -125,7 +125,7 @@ public class RecordSeriesPresenterTest {
     public void testSaveSeriesWithEmptyEpisodeError() {
         RecordSeriesContract.Presenter presenter = new RecordSeriesPresenter(view, repository, null);
 
-        presenter.saveSeries(SERIES_TITLE, "2", "", Series.SeriesStatus.TO_WATCH);
+        presenter.saveSeries(SERIES_TITLE, "2", "", Series.Status.TO_WATCH);
         verify(view).showErrorMessage();
     }
 
@@ -133,11 +133,11 @@ public class RecordSeriesPresenterTest {
     public void testSaveSeriesWithEmptyTitleError() {
         RecordSeriesContract.Presenter presenter = new RecordSeriesPresenter(view, repository, null);
 
-        presenter.saveSeries("", "2", "3", Series.SeriesStatus.TO_WATCH);
+        presenter.saveSeries("", "2", "3", Series.Status.TO_WATCH);
         verify(view).showErrorMessage();
     }
 
     private Series getSeries() {
-        return new Series(SERIES_ID, SERIES_TITLE, 2, 3, Series.SeriesStatus.TO_WATCH);
+        return new Series(SERIES_ID, SERIES_TITLE, 2, 3, Series.Status.TO_WATCH);
     }
 }

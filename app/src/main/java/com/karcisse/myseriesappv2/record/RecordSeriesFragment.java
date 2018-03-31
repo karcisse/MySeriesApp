@@ -69,13 +69,13 @@ public class RecordSeriesFragment extends Fragment implements RecordSeriesContra
         episodeTextView.setText(String.valueOf(series.getEpisodeNumber()));
         ArrayAdapter<SeriesStatusSpinnerChoice> arrayAdapter =
                 (ArrayAdapter<SeriesStatusSpinnerChoice>) statusSpinner.getAdapter();
-        statusSpinner.setSelection(arrayAdapter.getPosition(new SeriesStatusSpinnerChoice(series.getSeriesStatus())));
+        statusSpinner.setSelection(arrayAdapter.getPosition(new SeriesStatusSpinnerChoice(series.getStatus())));
     }
 
     @Override
     public void setSpinnerChoices(List<SeriesStatusSpinnerChoice> spinnerChoices) {
         for (SeriesStatusSpinnerChoice spinnerChoice : spinnerChoices) {
-            spinnerChoice.setDisplayText(getString(Series.SeriesStatus.getStringResId(
+            spinnerChoice.setDisplayText(getString(Series.Status.getStringResId(
                     spinnerChoice.getStatus()
             )));
         }

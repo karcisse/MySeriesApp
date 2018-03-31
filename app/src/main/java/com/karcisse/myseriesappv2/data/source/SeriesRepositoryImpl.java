@@ -33,7 +33,7 @@ public class SeriesRepositoryImpl implements SeriesRepository {
     }
 
     @Override
-    public List<Series> getSeriesByStatus(Series.SeriesStatus status) {
+    public List<Series> getSeriesByStatus(Series.Status status) {
         List<Series> seriesList = seriesDataSource.getSeriesByStatus(status);
 
         Collections.sort(seriesList, new Comparator<Series>() {

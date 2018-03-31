@@ -32,7 +32,7 @@ public class RecordSeriesPresenter implements RecordSeriesContract.Presenter {
     }
 
     @Override
-    public void saveSeries(String title, String season, String episode, Series.SeriesStatus status) {
+    public void saveSeries(String title, String season, String episode, Series.Status status) {
 
         if (title.isEmpty() || season.isEmpty() || episode.isEmpty()) {
             view.showErrorMessage();
@@ -56,7 +56,7 @@ public class RecordSeriesPresenter implements RecordSeriesContract.Presenter {
 
     private void setSeriesStatusesSpinnerChoices() {
         List<SeriesStatusSpinnerChoice> spinnerChoices = new ArrayList<>();
-        for (Series.SeriesStatus status : Series.SeriesStatus.values()) {
+        for (Series.Status status : Series.Status.values()) {
             spinnerChoices.add(new SeriesStatusSpinnerChoice(status));
         }
         view.setSpinnerChoices(spinnerChoices);

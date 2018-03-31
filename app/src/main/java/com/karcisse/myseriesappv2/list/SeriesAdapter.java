@@ -68,7 +68,7 @@ public class SeriesAdapter extends BaseAdapter {
         seriesTitle.setText(series.getSeriesTitle());
         seasonNumber.setText(String.valueOf(series.getSeasonNumber()));
         episodeNumber.setText(String.valueOf(series.getEpisodeNumber()));
-        setSeriesStatus(seriesStatus, series.getSeriesStatus());
+        setSeriesStatus(seriesStatus, series.getStatus());
 
         row.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -89,7 +89,7 @@ public class SeriesAdapter extends BaseAdapter {
 
         if (presenter.isRowEdited(series.getId())) {
             row.findViewById(R.id.edit_series_view).setVisibility(View.VISIBLE);
-            setUpEditSeriesRow(row, parent, series.getId(), series.getSeriesStatus(),
+            setUpEditSeriesRow(row, parent, series.getId(), series.getStatus(),
                     episodeNumber, seasonNumber, seriesStatus);
         } else {
             row.findViewById(R.id.edit_series_view).setVisibility(View.GONE);
@@ -98,7 +98,7 @@ public class SeriesAdapter extends BaseAdapter {
         return row;
     }
 
-    private int getColorForStatus(Series.SeriesStatus status) {
+    private int getColorForStatus(Series.Status status) {
         switch (status) {
             case TO_WATCH:
                 return Color.BLUE;
@@ -115,7 +115,7 @@ public class SeriesAdapter extends BaseAdapter {
         }
     }
 
-    private void setUpEditSeriesRow(View editRow, ViewGroup parent, final String seriesId, Series.SeriesStatus status,
+    private void setUpEditSeriesRow(View editRow, ViewGroup parent, final String seriesId, Series.Status status,
                                     final TextView episode, final TextView season, final TextView seriesStatus) {
 
         Spinner statusSpinner = (Spinner) editRow.findViewById(R.id.status_menu);
@@ -129,9 +129,9 @@ public class SeriesAdapter extends BaseAdapter {
 
     private List<SeriesStatusSpinnerChoice> setSeriesStatusesSpinnerChoices(Context context) {
         List<SeriesStatusSpinnerChoice> spinnerChoices = new ArrayList<>();
-        for (Series.SeriesStatus status : Series.SeriesStatus.values()) {
+        for (Series.Status status : Series.Status.values()) {
             SeriesStatusSpinnerChoice spinnerChoice = new SeriesStatusSpinnerChoice(status);
-            spinnerChoice.setDisplayText(context.getString(Series.SeriesStatus.getStringResId(
+            spinnerChoice.setDisplayText(context.getString(Series.Status.getStringResId(
                     spinnerChoice.getStatus()
             )));
             spinnerChoices.add(spinnerChoice);
@@ -158,8 +158,8 @@ public class SeriesAdapter extends BaseAdapter {
         }
     }
 
-    private void setSeriesStatus(TextView seriesStatus, Series.SeriesStatus status) {
-        seriesStatus.setText(Series.SeriesStatus.getStringResId(status));
+    private void setSeriesStatus(TextView seriesStatus, Series.Status status) {
+        seriesStatus.setText(Series.Status.getStringResId(status));
         seriesStatus.setTextColor(getColorForStatus(status));
     }
 
@@ -178,7 +178,7 @@ public class SeriesAdapter extends BaseAdapter {
             public void onClick(View v) {
                 presenter.incrementEpisode(seriesId);
                 incrementNumberValue(episode);
-                setSpinnerSelection(spinner, Series.SeriesStatus.WATCHING);
+                setSpinnerSelection(spinner, Series.Status.WATCHING);
             }
         });
     }
@@ -199,7 +199,7 @@ public class SeriesAdapter extends BaseAdapter {
             public void onClick(View v) {
                 presenter.incrementSeason(seriesId);
                 incrementNumberValue(season);
-                setSpinnerSelection(spinner, Series.SeriesStatus.WATCHING);
+                setSpinnerSelection(spinner, Series.Status.WATCHING);
             }
         });
     }
@@ -227,7 +227,7 @@ public class SeriesAdapter extends BaseAdapter {
         });
     }
 
-    private void setUpStatusSpinner(ViewGroup parent, final String seriesId, Series.SeriesStatus status,
+    private void setUpStatusSpinner(ViewGroup parent, final String seriesId, Series.Status status,
                                     final TextView seriesStatus, final Spinner statusSpinner) {
 
         final ArrayAdapter<SeriesStatusSpinnerChoice> arrayAdapter =
@@ -242,7 +242,7 @@ public class SeriesAdapter extends BaseAdapter {
                 seriesId, seriesStatus));
     }
 
-    private void setSpinnerSelection(@NonNull Spinner spinner, Series.SeriesStatus status) {
+    private void setSpinnerSelection(@NonNull Spinner spinner, Series.Status status) {
         ArrayAdapter<SeriesStatusSpinnerChoice> arrayAdapter =
                 (ArrayAdapter<SeriesStatusSpinnerChoice>) spinner.getAdapter();
         spinner.setSelection(arrayAdapter.getPosition(new SeriesStatusSpinnerChoice(status)));

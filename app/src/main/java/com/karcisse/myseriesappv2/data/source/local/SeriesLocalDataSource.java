@@ -46,7 +46,7 @@ public final class SeriesLocalDataSource implements SeriesDataSource {
     }
 
     @Override
-    public List<Series> getSeriesByStatus(Series.SeriesStatus status) {
+    public List<Series> getSeriesByStatus(Series.Status status) {
         List<Series> seriesList = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
@@ -110,7 +110,7 @@ public final class SeriesLocalDataSource implements SeriesDataSource {
         values.put(SeriesPersistenceContract.SeriesEntry.SERIES_TITLE, series.getSeriesTitle());
         values.put(SeriesPersistenceContract.SeriesEntry.SERIES_SEASON, series.getSeasonNumber());
         values.put(SeriesPersistenceContract.SeriesEntry.SERIES_EPISODE, series.getEpisodeNumber());
-        values.put(SeriesPersistenceContract.SeriesEntry.SERIES_STATUS, series.getSeriesStatus().name());
+        values.put(SeriesPersistenceContract.SeriesEntry.SERIES_STATUS, series.getStatus().name());
 
         if (isUpdate) {
             db.update(SeriesPersistenceContract.SeriesEntry.TABLE_NAME, values, WHERE_ID, new String[] {id});
@@ -135,7 +135,7 @@ public final class SeriesLocalDataSource implements SeriesDataSource {
         String title = c.getString(c.getColumnIndexOrThrow(SeriesPersistenceContract.SeriesEntry.SERIES_TITLE));
         Integer season = c.getInt(c.getColumnIndexOrThrow(SeriesPersistenceContract.SeriesEntry.SERIES_SEASON));
         Integer episode = c.getInt(c.getColumnIndexOrThrow(SeriesPersistenceContract.SeriesEntry.SERIES_EPISODE));
-        Series.SeriesStatus status = Series.SeriesStatus.valueOf(
+        Series.Status status = Series.Status.valueOf(
                 c.getString(c.getColumnIndexOrThrow(SeriesPersistenceContract.SeriesEntry.SERIES_STATUS)));
 
         return new Series(seriesId, title, season, episode, status);

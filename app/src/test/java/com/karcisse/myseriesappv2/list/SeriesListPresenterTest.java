@@ -39,11 +39,11 @@ public class SeriesListPresenterTest {
 
     @Test
     public void testStartPresenter() {
-        when(repository.getSeriesByStatus(Series.SeriesStatus.WATCHING)).thenReturn(getSeriesList(0, 3, Series.SeriesStatus.WATCHING));
-        when(repository.getSeriesByStatus(Series.SeriesStatus.ARRIVING)).thenReturn(getSeriesList(3, 6, Series.SeriesStatus.ARRIVING));
-        when(repository.getSeriesByStatus(Series.SeriesStatus.TO_WATCH)).thenReturn(getSeriesList(6, 9, Series.SeriesStatus.TO_WATCH));
-        when(repository.getSeriesByStatus(Series.SeriesStatus.COMPLETE)).thenReturn(getSeriesList(9, 12, Series.SeriesStatus.COMPLETE));
-        when(repository.getSeriesByStatus(Series.SeriesStatus.DROPPED)).thenReturn(getSeriesList(12, 15, Series.SeriesStatus.DROPPED));
+        when(repository.getSeriesByStatus(Series.Status.WATCHING)).thenReturn(getSeriesList(0, 3, Series.Status.WATCHING));
+        when(repository.getSeriesByStatus(Series.Status.ARRIVING)).thenReturn(getSeriesList(3, 6, Series.Status.ARRIVING));
+        when(repository.getSeriesByStatus(Series.Status.TO_WATCH)).thenReturn(getSeriesList(6, 9, Series.Status.TO_WATCH));
+        when(repository.getSeriesByStatus(Series.Status.COMPLETE)).thenReturn(getSeriesList(9, 12, Series.Status.COMPLETE));
+        when(repository.getSeriesByStatus(Series.Status.DROPPED)).thenReturn(getSeriesList(12, 15, Series.Status.DROPPED));
 
         presenter.start();
 
@@ -53,11 +53,11 @@ public class SeriesListPresenterTest {
 
     @Test
     public void testStartPresenterEmptyList() {
-        when(repository.getSeriesByStatus(Series.SeriesStatus.WATCHING)).thenReturn(new ArrayList<Series>());
-        when(repository.getSeriesByStatus(Series.SeriesStatus.ARRIVING)).thenReturn(new ArrayList<Series>());
-        when(repository.getSeriesByStatus(Series.SeriesStatus.TO_WATCH)).thenReturn(new ArrayList<Series>());
-        when(repository.getSeriesByStatus(Series.SeriesStatus.COMPLETE)).thenReturn(new ArrayList<Series>());
-        when(repository.getSeriesByStatus(Series.SeriesStatus.DROPPED)).thenReturn(new ArrayList<Series>());
+        when(repository.getSeriesByStatus(Series.Status.WATCHING)).thenReturn(new ArrayList<Series>());
+        when(repository.getSeriesByStatus(Series.Status.ARRIVING)).thenReturn(new ArrayList<Series>());
+        when(repository.getSeriesByStatus(Series.Status.TO_WATCH)).thenReturn(new ArrayList<Series>());
+        when(repository.getSeriesByStatus(Series.Status.COMPLETE)).thenReturn(new ArrayList<Series>());
+        when(repository.getSeriesByStatus(Series.Status.DROPPED)).thenReturn(new ArrayList<Series>());
 
         presenter.start();
 
@@ -77,7 +77,7 @@ public class SeriesListPresenterTest {
 
         assertThat(SERIES_ID_ASSERT_MESSAGE, series.getId(), is(baseSeries.getId()));
         assertThat("Series episode should be incremented", series.getEpisodeNumber(), is(3));
-        assertThat(SERIES_STATUS_WATCHING_ASSERT_MESSAGE, series.getSeriesStatus(), is(Series.SeriesStatus.WATCHING));
+        assertThat(SERIES_STATUS_WATCHING_ASSERT_MESSAGE, series.getStatus(), is(Series.Status.WATCHING));
         assertThat("Series season should not change", series.getSeasonNumber(), is(baseSeries.getSeasonNumber()));
         assertThat(SERIES_TITLE_ASSERT_MESSAGE, series.getSeriesTitle(), is(baseSeries.getSeriesTitle()));
 
@@ -96,7 +96,7 @@ public class SeriesListPresenterTest {
 
         assertThat(SERIES_ID_ASSERT_MESSAGE, series.getId(), is(baseSeries.getId()));
         assertThat("Series episode should be decremented", series.getEpisodeNumber(), is(1));
-        assertThat(SERIES_STATUS_WATCHING_ASSERT_MESSAGE, series.getSeriesStatus(), is(Series.SeriesStatus.WATCHING));
+        assertThat(SERIES_STATUS_WATCHING_ASSERT_MESSAGE, series.getStatus(), is(Series.Status.WATCHING));
         assertThat("Series season should not change", series.getSeasonNumber(), is(baseSeries.getSeasonNumber()));
         assertThat(SERIES_TITLE_ASSERT_MESSAGE, series.getSeriesTitle(), is(baseSeries.getSeriesTitle()));
     }
@@ -114,7 +114,7 @@ public class SeriesListPresenterTest {
 
         assertThat(SERIES_ID_ASSERT_MESSAGE, series.getId(), is(baseSeries.getId()));
         assertThat("Series episode should not change", series.getEpisodeNumber(), is(baseSeries.getEpisodeNumber()));
-        assertThat(SERIES_STATUS_WATCHING_ASSERT_MESSAGE, series.getSeriesStatus(), is(Series.SeriesStatus.WATCHING));
+        assertThat(SERIES_STATUS_WATCHING_ASSERT_MESSAGE, series.getStatus(), is(Series.Status.WATCHING));
         assertThat("Series season should be incremented", series.getSeasonNumber(), is(2));
         assertThat(SERIES_TITLE_ASSERT_MESSAGE, series.getSeriesTitle(), is(baseSeries.getSeriesTitle()));
 
@@ -133,7 +133,7 @@ public class SeriesListPresenterTest {
 
         assertThat(SERIES_ID_ASSERT_MESSAGE, series.getId(), is(baseSeries.getId()));
         assertThat("Series episode should not change", series.getEpisodeNumber(), is(baseSeries.getEpisodeNumber()));
-        assertThat(SERIES_STATUS_WATCHING_ASSERT_MESSAGE, series.getSeriesStatus(), is(Series.SeriesStatus.WATCHING));
+        assertThat(SERIES_STATUS_WATCHING_ASSERT_MESSAGE, series.getStatus(), is(Series.Status.WATCHING));
         assertThat("Series season should be decremented", series.getSeasonNumber(), is(0));
         assertThat(SERIES_TITLE_ASSERT_MESSAGE, series.getSeriesTitle(), is(baseSeries.getSeriesTitle()));
     }
@@ -142,7 +142,7 @@ public class SeriesListPresenterTest {
     public void testChangeStatus() {
         Series baseSeries = getSeries();
         when(repository.getSeries("id")).thenReturn(baseSeries);
-        presenter.changeStatus("id", Series.SeriesStatus.DROPPED);
+        presenter.changeStatus("id", Series.Status.DROPPED);
 
         ArgumentCaptor<Series> seriesArgumentCaptor = ArgumentCaptor.forClass(Series.class);
 
@@ -151,7 +151,7 @@ public class SeriesListPresenterTest {
 
         assertThat(SERIES_ID_ASSERT_MESSAGE, series.getId(), is(baseSeries.getId()));
         assertThat("Series episode should  not change", series.getEpisodeNumber(), is(baseSeries.getEpisodeNumber()));
-        assertThat("Series status should be changed", series.getSeriesStatus(), is(Series.SeriesStatus.DROPPED));
+        assertThat("Series status should be changed", series.getStatus(), is(Series.Status.DROPPED));
         assertThat("Series season should not change", series.getSeasonNumber(), is(baseSeries.getSeasonNumber()));
         assertThat(SERIES_TITLE_ASSERT_MESSAGE, series.getSeriesTitle(), is(baseSeries.getSeriesTitle()));
     }
@@ -164,7 +164,7 @@ public class SeriesListPresenterTest {
 
     @Test
     public void testDecrementEpisodeToNegative() {
-        Series baseSeries = new Series("id", SERIES_TITLE, 1, 0, Series.SeriesStatus.ARRIVING);
+        Series baseSeries = new Series("id", SERIES_TITLE, 1, 0, Series.Status.ARRIVING);
         when(repository.getSeries("id")).thenReturn(baseSeries);
         presenter.decrementEpisode("id");
         verify(repository, never()).saveSeries(any(Series.class));
@@ -172,17 +172,17 @@ public class SeriesListPresenterTest {
 
     @Test
     public void testDecrementSeasonToNegative() {
-        Series baseSeries = new Series("id", SERIES_TITLE, 0, 0, Series.SeriesStatus.ARRIVING);
+        Series baseSeries = new Series("id", SERIES_TITLE, 0, 0, Series.Status.ARRIVING);
         when(repository.getSeries("id")).thenReturn(baseSeries);
         presenter.decrementSeason("id");
         verify(repository, never()).saveSeries(any(Series.class));
     }
 
     private Series getSeries() {
-        return new Series("id", SERIES_TITLE, 1, 2, Series.SeriesStatus.ARRIVING);
+        return new Series("id", SERIES_TITLE, 1, 2, Series.Status.ARRIVING);
     }
 
-    private List<Series> getSeriesList(int start, int stop, Series.SeriesStatus status) {
+    private List<Series> getSeriesList(int start, int stop, Series.Status status) {
         List<Series> seriesList = new ArrayList<>();
 
         for (int i = start; i < stop; i++) {

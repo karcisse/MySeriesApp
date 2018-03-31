@@ -10,6 +10,6 @@ public interface SeriesRepository {
     void saveSeries(Series series);
     Series getSeries(@NonNull String seriesId);
     List<Series> getSeries();
-    List<Series> getSeriesByStatus(Series.SeriesStatus status);
+    List<Series> getSeriesByStatus(Series.Status status);
     void deleteSeries(String seriesId);
 }

@@ -22,7 +22,7 @@ public interface SeriesListContract {
         void decrementEpisode(String seriesId);
         void incrementSeason(String seriesId);
         void decrementSeason(String seriesId);
-        void changeStatus(String seriesId, Series.SeriesStatus status);
+        void changeStatus(String seriesId, Series.Status status);
         void deleteSeries(String seriesId);
         void closeItem(String seriesId);
         void openItem(String seriesId);
