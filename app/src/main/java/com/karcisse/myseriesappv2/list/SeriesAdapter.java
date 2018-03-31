@@ -118,10 +118,11 @@ public class SeriesAdapter extends BaseAdapter {
     private void setUpEditSeriesRow(View editRow, ViewGroup parent, final String seriesId, Series.SeriesStatus status,
                                     final TextView episode, final TextView season, final TextView seriesStatus) {
 
-        setUpEpisodeChangeListener(editRow, seriesId, episode);
-        setUpSeasonChangeListener(editRow, seriesId, season);
+        Spinner statusSpinner = (Spinner) editRow.findViewById(R.id.status_menu);
+        setUpEpisodeChangeListener(editRow, seriesId, episode, statusSpinner);
+        setUpSeasonChangeListener(editRow, seriesId, season, statusSpinner);
         setUpRowControlListener(editRow, seriesId);
-        setUpStatusSpinner(editRow, parent, seriesId, status, seriesStatus);
+        setUpStatusSpinner(parent, seriesId, status, seriesStatus, statusSpinner);
 
         editRow.setTag(EDIT_TAG);
     }
@@ -162,7 +163,8 @@ public class SeriesAdapter extends BaseAdapter {
         seriesStatus.setTextColor(getColorForStatus(status));
     }
 
-    private void setUpEpisodeChangeListener(View editRow, final String seriesId, final TextView episode) {
+    private void setUpEpisodeChangeListener(View editRow, final String seriesId, final TextView episode,
+                                            final Spinner spinner) {
         editRow.findViewById(R.id.dec_episode).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -176,11 +178,13 @@ public class SeriesAdapter extends BaseAdapter {
             public void onClick(View v) {
                 presenter.incrementEpisode(seriesId);
                 incrementNumberValue(episode);
+                setSpinnerSelection(spinner, Series.SeriesStatus.WATCHING);
             }
         });
     }
 
-    private void setUpSeasonChangeListener(View editRow, final String seriesId, final TextView season) {
+    private void setUpSeasonChangeListener(View editRow, final String seriesId, final TextView season,
+                                           final Spinner spinner) {
         editRow.findViewById(R.id.dec_season).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -195,6 +199,7 @@ public class SeriesAdapter extends BaseAdapter {
             public void onClick(View v) {
                 presenter.incrementSeason(seriesId);
                 incrementNumberValue(season);
+                setSpinnerSelection(spinner, Series.SeriesStatus.WATCHING);
             }
         });
     }
@@ -222,9 +227,8 @@ public class SeriesAdapter extends BaseAdapter {
         });
     }
 
-    private void setUpStatusSpinner(View editRow, ViewGroup parent, final String seriesId, Series.SeriesStatus status,
-                                    final TextView seriesStatus) {
-        Spinner statusSpinner = (Spinner) editRow.findViewById(R.id.status_menu);
+    private void setUpStatusSpinner(ViewGroup parent, final String seriesId, Series.SeriesStatus status,
+                                    final TextView seriesStatus, final Spinner statusSpinner) {
 
         final ArrayAdapter<SeriesStatusSpinnerChoice> arrayAdapter =
                 new ArrayAdapter<>(parent.getContext(), android.R.layout.simple_spinner_item,
@@ -234,20 +238,42 @@ public class SeriesAdapter extends BaseAdapter {
 
         statusSpinner.setSelection(arrayAdapter.getPosition(new SeriesStatusSpinnerChoice(status)));
 
-        statusSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                SeriesStatusSpinnerChoice spinnerChoice = arrayAdapter.getItem(position);
-                if (spinnerChoice != null) {
-                    SeriesAdapter.this.presenter.changeStatus(seriesId, spinnerChoice.getStatus());
-                    setSeriesStatus(seriesStatus, spinnerChoice.getStatus());
-                }
-            }
+        statusSpinner.setOnItemSelectedListener(new SpinnerItemSelectedListener(arrayAdapter,
+                seriesId, seriesStatus));
+    }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                //nothing to do
+    private void setSpinnerSelection(@NonNull Spinner spinner, Series.SeriesStatus status) {
+        ArrayAdapter<SeriesStatusSpinnerChoice> arrayAdapter =
+                (ArrayAdapter<SeriesStatusSpinnerChoice>) spinner.getAdapter();
+        spinner.setSelection(arrayAdapter.getPosition(new SeriesStatusSpinnerChoice(status)));
+    }
+
+    private final class SpinnerItemSelectedListener implements AdapterView.OnItemSelectedListener {
+        private final ArrayAdapter<SeriesStatusSpinnerChoice> arrayAdapter;
+        private final String seriesId;
+        private final TextView seriesStatus;
+        private boolean firstRun;
+
+        SpinnerItemSelectedListener(ArrayAdapter<SeriesStatusSpinnerChoice> arrayAdapter, String seriesId, TextView seriesStatus) {
+            this.arrayAdapter = arrayAdapter;
+            this.seriesId = seriesId;
+            this.seriesStatus = seriesStatus;
+            firstRun = true;
+        }
+
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            SeriesStatusSpinnerChoice spinnerChoice = arrayAdapter.getItem(position);
+            if (spinnerChoice != null && !firstRun) {
+                SeriesAdapter.this.presenter.changeStatus(seriesId, spinnerChoice.getStatus());
+                setSeriesStatus(seriesStatus, spinnerChoice.getStatus());
             }
-        });
+            firstRun = false;
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+            //nothing to do
+        }
     }
 }

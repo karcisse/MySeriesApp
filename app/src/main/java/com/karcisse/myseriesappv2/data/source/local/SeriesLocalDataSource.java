@@ -15,6 +15,7 @@ import java.util.UUID;
 
 public final class SeriesLocalDataSource implements SeriesDataSource {
 
+    private static final String WHERE_ID = SeriesPersistenceContract.SeriesEntry.SERIES_ID + "= ?";
     private final SeriesDbHelper dbHelper;
 
     public SeriesLocalDataSource(@NonNull Context context) {
@@ -100,8 +101,10 @@ public final class SeriesLocalDataSource implements SeriesDataSource {
 
         ContentValues values = new ContentValues();
         String id = series.getId();
+        boolean isUpdate = true;
         if (id == null) {
             id = UUID.randomUUID().toString();
+            isUpdate = false;
         }
         values.put(SeriesPersistenceContract.SeriesEntry.SERIES_ID, id);
         values.put(SeriesPersistenceContract.SeriesEntry.SERIES_TITLE, series.getSeriesTitle());
@@ -109,7 +112,11 @@ public final class SeriesLocalDataSource implements SeriesDataSource {
         values.put(SeriesPersistenceContract.SeriesEntry.SERIES_EPISODE, series.getEpisodeNumber());
         values.put(SeriesPersistenceContract.SeriesEntry.SERIES_STATUS, series.getSeriesStatus().name());
 
-        db.update(SeriesPersistenceContract.SeriesEntry.TABLE_NAME, values, null, null);
+        if (isUpdate) {
+            db.update(SeriesPersistenceContract.SeriesEntry.TABLE_NAME, values, WHERE_ID, new String[] {id});
+        } else {
+            db.insert(SeriesPersistenceContract.SeriesEntry.TABLE_NAME, null, values);
+        }
         db.close();
     }
 

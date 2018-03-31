@@ -1,6 +1,7 @@
 package com.karcisse.myseriesappv2.list;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.karcisse.myseriesappv2.data.Series;
 import com.karcisse.myseriesappv2.data.source.SeriesRepository;
@@ -93,14 +94,18 @@ public class SeriesListPresenter implements SeriesListContract.Presenter {
 
     @Override
     public void closeItem(String seriesId) {
-        openedEdits.remove(seriesId);
-        refresh();
+        if (isRowEdited(seriesId)) {
+            openedEdits.remove(seriesId);
+            refresh();
+        }
     }
 
     @Override
     public void openItem(String seriesId) {
-        openedEdits.add(seriesId);
-        refresh();
+        if (!isRowEdited(seriesId)) {
+            openedEdits.add(seriesId);
+            refresh();
+        }
     }
 
     @Override
@@ -109,8 +114,8 @@ public class SeriesListPresenter implements SeriesListContract.Presenter {
     }
 
     @Override
-    public boolean isRowEdited(@NonNull String id) {
-        return openedEdits.contains(id);
+    public boolean isRowEdited(@Nullable String id) {
+        return id != null && openedEdits.contains(id);
     }
 
     @Override
