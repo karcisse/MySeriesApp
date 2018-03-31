@@ -3,6 +3,7 @@ package com.karcisse.myseriesappv2.list;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
@@ -62,12 +63,12 @@ public class SeriesListFragment extends Fragment implements SeriesListContract.V
     }
 
     @Override
-    public void showRecordSeries(String seriesId) {
+    public void showRecordSeries(@NonNull String seriesId) {
         ((MySeriesActivity) getActivity()).showRecordSeries(seriesId);
     }
 
     @Override
-    public void showEditScreen(String seriesId) {
+    public void showEditScreen(@NonNull String seriesId) {
         ((MySeriesActivity) getActivity()).showRecordSeries(seriesId);
     }
 
@@ -85,12 +86,14 @@ public class SeriesListFragment extends Fragment implements SeriesListContract.V
 
     @Override
     public void onCreateOptionsMenu(Menu menu, final MenuInflater inflater) {
-        // Inflate the options menu from XML
         inflater.inflate(R.menu.options_menu, menu);
 
         MySeriesActivity activity = (MySeriesActivity) getActivity();
-        // Get the SearchView and set the searchable configuration
+
         SearchManager searchManager = (SearchManager) activity.getSystemService(Context.SEARCH_SERVICE);
+        if (searchManager == null) {
+            return;
+        }
         MenuItem searchItem = menu.findItem(R.id.search);
         MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener() {
             @Override

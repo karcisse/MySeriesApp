@@ -31,14 +31,6 @@ public class Series {
         this.status = status;
     }
 
-    public Series() {
-        this.id = null;
-        this.seriesTitle = "";
-        this.seasonNumber = 1;
-        this.episodeNumber = 1;
-        this.status = null;
-    }
-
     @Nullable
     public String getId() {
         return id;

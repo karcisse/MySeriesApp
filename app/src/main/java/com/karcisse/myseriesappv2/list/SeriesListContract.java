@@ -11,25 +11,26 @@ public interface SeriesListContract {
 
     interface View extends BaseView<Presenter> {
         void showSeriesList();
-        void showRecordSeries(String seriesId);
-        void showEditScreen(String seriesId);
+        void showRecordSeries(@NonNull String seriesId);
+        void showEditScreen(@NonNull String seriesId);
         void onEmptyList();
         void onNotEmptyList();
     }
 
     interface Presenter extends BasePresenter {
-        void incrementEpisode(String seriesId);
-        void decrementEpisode(String seriesId);
-        void incrementSeason(String seriesId);
-        void decrementSeason(String seriesId);
-        void changeStatus(String seriesId, Series.Status status);
-        void deleteSeries(String seriesId);
-        void closeItem(String seriesId);
-        void openItem(String seriesId);
+        void incrementEpisode(@NonNull String seriesId);
+        void decrementEpisode(@NonNull String seriesId);
+        void incrementSeason(@NonNull String seriesId);
+        void decrementSeason(@NonNull String seriesId);
+        void changeStatus(@NonNull String seriesId, @NonNull Series.Status status);
+        void deleteSeries(@NonNull String seriesId);
+        void closeItem(@NonNull String seriesId);
+        void openItem(@Nullable String seriesId);
         void showRecordSeries(@NonNull String seriesId);
         boolean isRowEdited(@Nullable String id);
         int getDataSize();
-        void showEditScreen(String seriesId);
+        void showEditScreen(@NonNull String seriesId);
+        @Nullable
         Series getItemAt(int position);
         void searchForSeries(@NonNull String searchQuery);
     }

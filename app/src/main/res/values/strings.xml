@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">MySeriesAppV2</string>
-    <string name="title">Title</string>
     <string name="series_title">Series title</string>
     <string name="episode">Episode</string>
     <string name="season">Season</string>
@@ -16,4 +15,12 @@
     <string name="fill_all_fields">Please fill all inputs</string>
     <string name="search_hint">Look for your series …</string>
     <string name="search_title">Search</string>
+    <string name="app_icon">MySeriesAppIcon</string>
+    <string name="edit_button">Edit Button</string>
+    <string name="delete_series">Delete Series</string>
+    <string name="close_button">Close Button</string>
+    <string name="increment_episode">Increment Episode</string>
+    <string name="increment_season">Increment Season</string>
+    <string name="decrement_episode">Decrement Episode</string>
+    <string name="decrement_season">Decrement Season</string>
 </resources>

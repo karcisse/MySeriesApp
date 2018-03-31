@@ -2,6 +2,7 @@ package com.karcisse.myseriesappv2.record;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -63,7 +64,7 @@ public class RecordSeriesFragment extends Fragment implements RecordSeriesContra
     }
 
     @Override
-    public void showSeriesData(Series series) {
+    public void showSeriesData(@NonNull Series series) {
         titleTextView.setText(series.getSeriesTitle());
         seasonTextView.setText(String.valueOf(series.getSeasonNumber()));
         episodeTextView.setText(String.valueOf(series.getEpisodeNumber()));
@@ -73,7 +74,7 @@ public class RecordSeriesFragment extends Fragment implements RecordSeriesContra
     }
 
     @Override
-    public void setSpinnerChoices(List<SeriesStatusSpinnerChoice> spinnerChoices) {
+    public void setSpinnerChoices(@NonNull List<SeriesStatusSpinnerChoice> spinnerChoices) {
         for (SeriesStatusSpinnerChoice spinnerChoice : spinnerChoices) {
             spinnerChoice.setDisplayText(getString(Series.Status.getStringResId(
                     spinnerChoice.getStatus()
@@ -104,8 +105,8 @@ public class RecordSeriesFragment extends Fragment implements RecordSeriesContra
 
     private void closeKeyboard() {
         View view = getActivity().getCurrentFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (view != null && imm != null) {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }

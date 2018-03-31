@@ -18,7 +18,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/icon_round" />
+        app:srcCompat="@drawable/icon_round"
+        android:contentDescription="@string/app_icon" />
 
     <ListView
         android:id="@+id/series_list_view"
