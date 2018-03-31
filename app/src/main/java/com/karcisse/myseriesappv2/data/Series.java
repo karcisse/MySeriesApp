@@ -10,25 +10,25 @@ public class Series {
     @NonNull private final String seriesTitle;
     private final int seasonNumber;
     private final int episodeNumber;
-    @NonNull private final SeriesStatus seriesStatus;
+    @NonNull private final Status status;
 
     public Series(@Nullable String id, @NonNull String seriesTitle,
-                  int seasonNumber, int episodeNumber, @NonNull SeriesStatus seriesStatus) {
+                  int seasonNumber, int episodeNumber, @NonNull Status status) {
         this.id = id;
         this.seriesTitle = seriesTitle;
         this.seasonNumber = seasonNumber;
         this.episodeNumber = episodeNumber;
-        this.seriesStatus = seriesStatus;
+        this.status = status;
     }
 
     public Series(@NonNull String seriesTitle,
                   int seasonNumber, int episodeNumber,
-                  @NonNull SeriesStatus seriesStatus) {
+                  @NonNull Status status) {
         this.id = null;
         this.seriesTitle = seriesTitle;
         this.seasonNumber = seasonNumber;
         this.episodeNumber = episodeNumber;
-        this.seriesStatus = seriesStatus;
+        this.status = status;
     }
 
     public Series() {
@@ -36,7 +36,7 @@ public class Series {
         this.seriesTitle = "";
         this.seasonNumber = 1;
         this.episodeNumber = 1;
-        this.seriesStatus = null;
+        this.status = null;
     }
 
     @Nullable
@@ -58,18 +58,18 @@ public class Series {
     }
 
     @NonNull
-    public SeriesStatus getSeriesStatus() {
-        return seriesStatus;
+    public Status getStatus() {
+        return status;
     }
 
-    public enum SeriesStatus {
+    public enum Status {
         WATCHING,
         ARRIVING,
         TO_WATCH,
         COMPLETE,
         DROPPED;
 
-        public static int getStringResId(@NonNull SeriesStatus status) {
+        public static int getStringResId(@NonNull Status status) {
             switch (status) {
                 case TO_WATCH:
                     return R.string.to_watch;

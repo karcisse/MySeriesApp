@@ -17,6 +17,6 @@ public interface RecordSeriesContract {
     }
 
     interface Presenter extends BasePresenter {
-        void saveSeries(String title, String season, String episode, Series.SeriesStatus status);
+        void saveSeries(String title, String season, String episode, Series.Status status);
     }
 }

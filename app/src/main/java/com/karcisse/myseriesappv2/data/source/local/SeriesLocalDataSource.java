@@ -15,6 +15,7 @@ import java.util.UUID;
 
 public final class SeriesLocalDataSource implements SeriesDataSource {
 
+    private static final String WHERE_ID = SeriesPersistenceContract.SeriesEntry.SERIES_ID + "= ?";
     private final SeriesDbHelper dbHelper;
 
     public SeriesLocalDataSource(@NonNull Context context) {
@@ -45,7 +46,7 @@ public final class SeriesLocalDataSource implements SeriesDataSource {
     }
 
     @Override
-    public List<Series> getSeriesByStatus(Series.SeriesStatus status) {
+    public List<Series> getSeriesByStatus(Series.Status status) {
         List<Series> seriesList = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
@@ -100,16 +101,22 @@ public final class SeriesLocalDataSource implements SeriesDataSource {
 
         ContentValues values = new ContentValues();
         String id = series.getId();
+        boolean isUpdate = true;
         if (id == null) {
             id = UUID.randomUUID().toString();
+            isUpdate = false;
         }
         values.put(SeriesPersistenceContract.SeriesEntry.SERIES_ID, id);
         values.put(SeriesPersistenceContract.SeriesEntry.SERIES_TITLE, series.getSeriesTitle());
         values.put(SeriesPersistenceContract.SeriesEntry.SERIES_SEASON, series.getSeasonNumber());
         values.put(SeriesPersistenceContract.SeriesEntry.SERIES_EPISODE, series.getEpisodeNumber());
-        values.put(SeriesPersistenceContract.SeriesEntry.SERIES_STATUS, series.getSeriesStatus().name());
+        values.put(SeriesPersistenceContract.SeriesEntry.SERIES_STATUS, series.getStatus().name());
 
-        db.update(SeriesPersistenceContract.SeriesEntry.TABLE_NAME, values, null, null);
+        if (isUpdate) {
+            db.update(SeriesPersistenceContract.SeriesEntry.TABLE_NAME, values, WHERE_ID, new String[] {id});
+        } else {
+            db.insert(SeriesPersistenceContract.SeriesEntry.TABLE_NAME, null, values);
+        }
         db.close();
     }
 
@@ -128,7 +135,7 @@ public final class SeriesLocalDataSource implements SeriesDataSource {
         String title = c.getString(c.getColumnIndexOrThrow(SeriesPersistenceContract.SeriesEntry.SERIES_TITLE));
         Integer season = c.getInt(c.getColumnIndexOrThrow(SeriesPersistenceContract.SeriesEntry.SERIES_SEASON));
         Integer episode = c.getInt(c.getColumnIndexOrThrow(SeriesPersistenceContract.SeriesEntry.SERIES_EPISODE));
-        Series.SeriesStatus status = Series.SeriesStatus.valueOf(
+        Series.Status status = Series.Status.valueOf(
                 c.getString(c.getColumnIndexOrThrow(SeriesPersistenceContract.SeriesEntry.SERIES_STATUS)));
 
         return new Series(seriesId, title, season, episode, status);

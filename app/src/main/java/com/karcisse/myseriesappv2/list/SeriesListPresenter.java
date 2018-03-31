@@ -1,6 +1,7 @@
 package com.karcisse.myseriesappv2.list;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.karcisse.myseriesappv2.data.Series;
 import com.karcisse.myseriesappv2.data.source.SeriesRepository;
@@ -36,7 +37,7 @@ public class SeriesListPresenter implements SeriesListContract.Presenter {
         Series series = repository.getSeries(seriesId);
 
         Series newSeries = new Series(seriesId, series.getSeriesTitle(),
-                series.getSeasonNumber(), series.getEpisodeNumber() + 1, Series.SeriesStatus.WATCHING);
+                series.getSeasonNumber(), series.getEpisodeNumber() + 1, Series.Status.WATCHING);
 
         repository.saveSeries(newSeries);
     }
@@ -47,7 +48,7 @@ public class SeriesListPresenter implements SeriesListContract.Presenter {
 
         if (series.getEpisodeNumber() != 0) {
             Series newSeries = new Series(seriesId, series.getSeriesTitle(),
-                    series.getSeasonNumber(), series.getEpisodeNumber() - 1, Series.SeriesStatus.WATCHING);
+                    series.getSeasonNumber(), series.getEpisodeNumber() - 1, Series.Status.WATCHING);
 
             repository.saveSeries(newSeries);
         }
@@ -58,7 +59,7 @@ public class SeriesListPresenter implements SeriesListContract.Presenter {
         Series series = repository.getSeries(seriesId);
 
         Series newSeries = new Series(seriesId, series.getSeriesTitle(),
-                series.getSeasonNumber() + 1, series.getEpisodeNumber(), Series.SeriesStatus.WATCHING);
+                series.getSeasonNumber() + 1, series.getEpisodeNumber(), Series.Status.WATCHING);
 
         repository.saveSeries(newSeries);
     }
@@ -69,14 +70,14 @@ public class SeriesListPresenter implements SeriesListContract.Presenter {
 
         if (series.getSeasonNumber() != 0) {
             Series newSeries = new Series(seriesId, series.getSeriesTitle(),
-                    series.getSeasonNumber() - 1, series.getEpisodeNumber(), Series.SeriesStatus.WATCHING);
+                    series.getSeasonNumber() - 1, series.getEpisodeNumber(), Series.Status.WATCHING);
 
             repository.saveSeries(newSeries);
         }
     }
 
     @Override
-    public void changeStatus(String seriesId, Series.SeriesStatus status) {
+    public void changeStatus(String seriesId, Series.Status status) {
         Series series = repository.getSeries(seriesId);
 
         Series newSeries = new Series(seriesId, series.getSeriesTitle(),
@@ -93,14 +94,18 @@ public class SeriesListPresenter implements SeriesListContract.Presenter {
 
     @Override
     public void closeItem(String seriesId) {
-        openedEdits.remove(seriesId);
-        refresh();
+        if (isRowEdited(seriesId)) {
+            openedEdits.remove(seriesId);
+            refresh();
+        }
     }
 
     @Override
     public void openItem(String seriesId) {
-        openedEdits.add(seriesId);
-        refresh();
+        if (!isRowEdited(seriesId)) {
+            openedEdits.add(seriesId);
+            refresh();
+        }
     }
 
     @Override
@@ -109,8 +114,8 @@ public class SeriesListPresenter implements SeriesListContract.Presenter {
     }
 
     @Override
-    public boolean isRowEdited(@NonNull String id) {
-        return openedEdits.contains(id);
+    public boolean isRowEdited(@Nullable String id) {
+        return id != null && openedEdits.contains(id);
     }
 
     @Override
@@ -130,11 +135,11 @@ public class SeriesListPresenter implements SeriesListContract.Presenter {
 
     private void loadSeries() {
         data.clear();
-        data.addAll(repository.getSeriesByStatus(Series.SeriesStatus.WATCHING));
-        data.addAll(repository.getSeriesByStatus(Series.SeriesStatus.ARRIVING));
-        data.addAll(repository.getSeriesByStatus(Series.SeriesStatus.TO_WATCH));
-        data.addAll(repository.getSeriesByStatus(Series.SeriesStatus.COMPLETE));
-        data.addAll(repository.getSeriesByStatus(Series.SeriesStatus.DROPPED));
+        data.addAll(repository.getSeriesByStatus(Series.Status.WATCHING));
+        data.addAll(repository.getSeriesByStatus(Series.Status.ARRIVING));
+        data.addAll(repository.getSeriesByStatus(Series.Status.TO_WATCH));
+        data.addAll(repository.getSeriesByStatus(Series.Status.COMPLETE));
+        data.addAll(repository.getSeriesByStatus(Series.Status.DROPPED));
 
         if (data.isEmpty()) {
             view.onEmptyList();
