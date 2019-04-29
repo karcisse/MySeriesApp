@@ -24,7 +24,7 @@ public class SeriesListFragment extends Fragment implements SeriesListContract.V
 
     private SeriesListContract.Presenter presenter;
 
-    private SeriesAdapter adapter;
+    public SeriesAdapter adapter;
 
     private ListView seriesListView;
     private ImageView placeholder;
